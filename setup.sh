@@ -38,7 +38,7 @@ create_custom_venv dev
 create_custom_venv test
 create_custom_venv prod
 
-sudo pacman -S git zsh tmux mdcat neovim cava picom i3-wm rofi curl rxvt-unicode urxvt-perls xsel lsd -y
+sudo pacman -S git zsh jq wget tmux mdcat neovim cava picom i3-wm rofi curl rxvt-unicode urxvt-perls xsel lsd -y
 
 # Dot files path
 dotfiles_dir="$HOME/.dotfiles"
