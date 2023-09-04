@@ -1,0 +1,37 @@
+! One Dark color scheme for urxvt
+#include "$HOME/themes/onedark/onedark.Xresources"
+
+! Font settings
+URxvt.font: xft:DejaVu Sans Mono:size=12
+
+! Cursor style
+URxvt.cursorColor: #abb2bf
+URxvt.cursorBlink: true
+URxvt.cursorUnderline: true
+
+! Scrollbar style
+URxvt.scrollBar: false
+URxvt.scrollBar_right: false
+URxvt.urgentOnBell: true
+
+! Border style
+URxvt.internalBorder: 10
+
+! Text standards
+URxvt*utf8: 1
+URxvt*termName: rxvt-unicode
+
+! Line spacing
+URxvt.lineSpace: 5
+URxvt.letterSpace: 1
+
+! URL handling (requires external script)
+URxvt.perl-ext-common: default,url-select,matcher
+URxvt.url-select.launcher: /usr/bin/firefox
+
+! Clipboard integration
+URxvt.iso14755: false
+URxvt.secondaryWheel: true
+
+! Save a backup of the configuration to apply changes
+URxvt.saveLines: 10000

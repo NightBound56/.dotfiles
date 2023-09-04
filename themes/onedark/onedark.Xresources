@@ -1,0 +1,19 @@
+! One Dark color scheme
+URxvt.background: [90]#282c34
+URxvt.foreground: #abb2bf
+URxvt.color0: #1e2127
+URxvt.color1: #e06c75
+URxvt.color2: #98c379
+URxvt.color3: #d19a66
+URxvt.color4: #61afef
+URxvt.color5: #c678dd
+URxvt.color6: #56b6c2
+URxvt.color7: #5c6370
+URxvt.color8: #3e4451
+URxvt.color9: #e06c75
+URxvt.color10: #98c379
+URxvt.color11: #d19a66
+URxvt.color12: #61afef
+URxvt.color13: #c678dd
+URxvt.color14: #56b6c2
+URxvt.color15: #abb2bf

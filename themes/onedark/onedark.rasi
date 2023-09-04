@@ -1,0 +1,41 @@
+* {
+    background: #282c34;
+    foreground: #abb2bf;
+    selection-background: #3e4451;
+    selection-foreground: #ffffff;
+    border: #181a1f;
+    border-urgent: #e06c75;
+    border-focused: #61afef;
+    text-normal: #abb2bf;
+    text-urgent: #e06c75;
+    text-focused: #61afef;
+}
+
+window {
+    padding: 10;
+    background-color: @background;
+    border: 2px solid @border;
+}
+
+#textbox-prompt-colon, #entry, #listview {
+    text-color: @text-normal;
+    normal-background: @background;
+    selected-background: @selection-background;
+    selected-normal-background: @selection-background;
+}
+
+#element {
+    selected-normal-background: @selection-background;
+    normal-background: @background;
+}
+
+#scrollbar {
+    handle-color: @foreground;
+    normal-background: @background;
+}
+
+#mode-switcher {
+    background-color: @background;
+    text-color: @foreground;
+    border: 2px solid @border;
+}

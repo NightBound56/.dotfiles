@@ -1,0 +1,102 @@
+# ~/.config/i3/config
+
+# Load color scheme from the XDG configuration directory
+exec --no-startup-id "source $XDG_CONFIG_HOME/themes/onedark/i3colors.conf"
+
+# Assign colors to various i3 elements
+client.focused                    $bg $bg $accent $bg $bg
+client.focused_inactive           $bg_alt $bg_alt $fg $bg_alt $bg_alt
+client.unfocused                  $bg_alt $bg_alt $fg $bg_alt $bg_alt
+client.urgent                     $bg_alt $bg_alt $fg $bg_alt $bg_alt
+client.placeholder               $bg $bg $fg $bg $bg
+client.background                $bg $bg $bg $bg $bg
+
+# ...
+# Configure gaps
+gaps inner 10
+gaps outer 5
+
+# Launch terminal
+bindsym $mod+Return exec urxvt
+
+# Use Mod3+Mouse to drag floating windows to their wanted position
+floating_modifier $mod
+
+# Close focused window
+bindsym Mod3+Shift+q kill
+
+# Change focus with keys "h", "j", "k", and "l"
+bindsym Mod3+h focus left
+bindsym Mod3+j focus down
+bindsym Mod3+k focus up
+bindsym Mod3+l focus right
+
+# Move focused window with keys "h", "j", "k", and "l"
+bindsym Mod3+Shift+h move left
+bindsym Mod3+Shift+j move down
+bindsym Mod3+Shift+k move up
+bindsym Mod3+Shift+l move right
+
+# Split modes
+bindsym Mod3+h split h
+bindsym Mod3+v split v
+
+# Toggle fullscreen
+bindsym Mod3+f fullscreen toggle
+
+# Restart i3 in place
+bindsym Mod3+Shift+r restart
+
+# Exit i3
+bindsym Mod3+Shift+e exec "i3-nagbar -t warning -m 'Do you really want to exit?' -b 'Yes, exit' 'i3-msg exit'"
+
+# Resize mode
+mode "resize" {
+    bindsym Mod3+j resize shrink width 10 px or 10 ppt
+    bindsym Mod3+k resize grow height 10 px or 10 ppt
+    bindsym Mod3+h resize shrink width 10 px or 10 ppt
+    bindsym Mod3+l resize grow height 10 px or 10 ppt
+    bindsym Escape mode "default"
+    bindsym Return mode "default"
+}
+bindsym Mod3+r mode "resize"
+
+# Reload the configuration file
+bindsym Mod3+Shift+c reload
+
+# Use the system's dmenu for launching applications
+bindsym Mod3+d exec dmenu_run
+
+# Workspace navigation
+workspace_auto_back_and_forth yes
+bindsym Mod3+1 workspace 1
+bindsym Mod3+2 workspace 2
+bindsym Mod3+3 workspace 3
+bindsym Mod3+4 workspace 4
+bindsym Mod3+5 workspace 5
+bindsym Mod3+6 workspace 6
+bindsym Mod3+7 workspace 7
+bindsym Mod3+8 workspace 8
+bindsym Mod3+9 workspace 9
+bindsym Mod3+0 workspace 10
+
+# Reload i3 configuration
+bindsym Mod3+Shift+r reload
+
+# Move to workspace
+bindsym Mod3+Shift+1 move container to workspace 1
+bindsym Mod3+Shift+2 move container to workspace 2
+bindsym Mod3+Shift+3 move container to workspace 3
+bindsym Mod3+Shift+4 move container to workspace 4
+bindsym Mod3+Shift+5 move container to workspace 5
+bindsym Mod3+Shift+6 move container to workspace 6
+bindsym Mod3+Shift+7 move container to workspace 7
+bindsym Mod3+Shift+8 move container to workspace 8
+bindsym Mod3+Shift+9 move container to workspace 9
+bindsym Mod3+Shift+0 move container to workspace 10
+
+# Start i3bar to display workspace and window information
+bar {
+    status_command i3bar
+}
+
