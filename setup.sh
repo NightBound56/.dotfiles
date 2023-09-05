@@ -31,6 +31,32 @@ create_custom_venv() {
     fi
 }
 
+copy_env_file() {
+    # Check if both parameters are provided
+    if [ $# -ne 2 ]; then
+        echo "Usage: copy_env_file <environment> <destination_directory>"
+        return 1
+    fi
+
+    local environment="$1"
+    local destination_directory="$2"
+    
+    # Construct the source path based on the environment
+    local source_file="$HOME/venvs/${environment}.env"
+
+    # Check if the source file exists
+    if [ -f "$source_file" ]; then
+        # Copy the source file to the destination directory and rename it to ".env"
+        cp "$source_file" "$destination_directory/.env"
+        echo "Copied ${environment}.env to $destination_directory as .env"
+    else
+        echo "Error: ${environment}.env not found in $HOME/venvs."
+    fi
+}
+
+
+
+
 prep_directories() {
     local dir_path="$1"
     
@@ -58,10 +84,16 @@ dotfiles_dir="$HOME/.dotfiles"
 
 cd $HOME
 
-# Set up python environments and create template .env files
+# Set up python environments and create template .env files.
 create_custom_venv dev
 create_custom_venv test
 create_custom_venv prod
+# The template .env files can be copied to the relevant directories. This allows the ZSH plugin autoenv to change environments when CD'ing into the directory.
+
+copy_env_file prod $HOME
+
+
+
 
 sudo pacman -S onboard git zsh jq wget tmux mdcat neovim picom i3-wm rofi curl rxvt-unicode urxvt-perls xsel lsd --noconfirm
 yay -S betterlockscreen cava --noconfirm
@@ -79,31 +111,30 @@ prep_directories "$HOME/.config/mpv"
 prep_directories "$HOME/scripts"
 prep_directories "$HOME/fonts"
 prep_directories "$HOME/themes"
-prep_directories "$HOME/scripts"
 
 #Create symbolic links
-
 ln -s "$dotfiles_dir/i3/config" ~/.config/i3/config
 ln -s "$dotfiles_dir/cava" ~/.config/cava
 ln -s "$dotfiles_dir/dmenu" ~/.config/dmenu
-ln -s "$dotfiles_dir/.zshrc" ~/.zshrc
-ln -s "$dotfiles_dir/.bashrc" ~/.bashrc
-ln -s "$dotfiles_dir/.bash_aliases" ~/.bash_aliases
-ln -s "$dotfiles_dir/fonts" ~/fonts
-ln -s "$dotfiles_dir/scripts" ~/scripts
-ln -s "$dotfiles_dir/themes" ~/themes
-ln -s "$dotfiles_dir/.tmux.conf" ~/.tmux.conf
 ln -s "$dotfiles_dir/rofi/config" ~/.config/rofi/config
 ln -s "$dotfiles_dir/polybar/config" ~/.config/polybar/config
 ln -s "$dotfiles_dir/nvim/init.vim" ~/.config/nvim/init.vim
-ln -s "$dotfiles_dir/.Xresources" ~/.Xresources
 ln -s "$dotfiles_dir/picom/picom.conf" ~/.config/picom/picom.conf
 ln -s "$dotfiles_dir/mpv/mpv.conf" ~/.config/mpv/mpv.conf
+ln -s "$dotfiles_dir/scripts" ~/scripts
+ln -s "$dotfiles_dir/fonts" ~/fonts
+ln -s "$dotfiles_dir/themes" ~/themes
+
+ln -s "$dotfiles_dir/.zshrc" ~/.zshrc
+ln -s "$dotfiles_dir/.bashrc" ~/.bashrc
+ln -s "$dotfiles_dir/.bash_aliases" ~/.bash_aliases
+ln -s "$dotfiles_dir/.tmux.conf" ~/.tmux.conf
+ln -s "$dotfiles_dir/.Xresources" ~/.Xresources
 ln -s "$dotfiles_dir/file_templates" ~/file_templates
 
 echo "Symbolic links created!"
 
-# Make workflow folders if they dont already exist.
+# Make workflow folders if they dont already exist. These dont point to config files in the git repo.
 mkdir -p $HOME/documentation/best_practice
 mkdir -p $HOME/documentation/business_processes
 mkdir -p $HOME/documentation/meeting_notes
@@ -128,12 +159,16 @@ mkdir -p $HOME/resources
 mkdir -p $HOME/keys
 mkdir -p $HOME/wallapers
 
+# grab repo's and scripts from third parties
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+# ZSH plugins
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 git clone https://github.com/zpm-zsh/autoenv ~/.oh-my-zsh/custom/plugins/autoenv
 git clone https://github.com/zsh-users/zsh-syntax-highlighting ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
 git clone https://github.com/zsh-users/zsh-completions ~/.oh-my-zsh/custom/plugins/zsh-completions
+# Clone in wallpapers for onedark theme
+git clone https://github.com/Narmis-E/onedark-wallpapers/tree/main ~/wallpapers
 
 # nvim plugin manager
 sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
