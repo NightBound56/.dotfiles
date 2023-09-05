@@ -168,7 +168,7 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting ~/.oh-my-zsh/cust
 git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
 git clone https://github.com/zsh-users/zsh-completions ~/.oh-my-zsh/custom/plugins/zsh-completions
 # Clone in wallpapers for onedark theme
-git clone https://github.com/Narmis-E/onedark-wallpapers/tree/main ~/wallpapers
+git clone https://github.com/Narmis-E/onedark-wallpapers ~/wallpapers
 
 # nvim plugin manager
 sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
