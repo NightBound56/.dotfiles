@@ -31,6 +31,31 @@ create_custom_venv() {
     fi
 }
 
+prep_directories() {
+    local dir_path="$1"
+    
+    if [ -L "$dir_path" ]; then
+        # If it's a symbolic link, remove it.
+        echo "Removing symbolic link: $dir_path"
+        rm "$dir_path"
+    elif [ ! -d "$dir_path" ]; then
+        # If it doesn't exist, create the directory.
+        echo "Creating directory: $dir_path"
+        mkdir -p "$dir_path"
+    fi
+}
+
+# Function to create a symbolic link with the -s argument.
+create_symbolic_link() {
+    local target="$1"
+    local destination="$2"
+    
+    ln -s "$target" "$destination"
+}
+
+dotfiles_dir="$HOME/.dotfiles"
+
+
 cd $HOME
 
 # Set up python environments and create template .env files
@@ -38,63 +63,47 @@ create_custom_venv dev
 create_custom_venv test
 create_custom_venv prod
 
-sudo pacman -S onboard git zsh jq wget tmux mdcat neovim picom i3-wm rofi curl rxvt-unicode urxvt-perls xsel lsd -y
-yay -S betterlockscreen cava
-# Dot files path
-dotfiles_dir="$HOME/.dotfiles"
+sudo pacman -S onboard git zsh jq wget tmux mdcat neovim picom i3-wm rofi curl rxvt-unicode urxvt-perls xsel lsd --noconfirm
+yay -S betterlockscreen cava --noconfirm
 
-# i3-gaps
+
+# create directories for symbolic links (if they dont already exist), if there is already a symbolic link then remove it.
+prep_directories "$HOME/.config/i3"
+prep_directories "$HOME/.config/cava"
+prep_directories "$HOME/.config/dmenu"
+prep_directories "$HOME/.config/rofi"
+prep_directories "$HOME/.config/polybar"
+prep_directories "$HOME/.config/nvim"
+prep_directories "$HOME/.config/picom"
+prep_directories "$HOME/.config/mpv"
+prep_directories "$HOME/scripts"
+prep_directories "$HOME/fonts"
+prep_directories "$HOME/themes"
+prep_directories "$HOME/scripts"
+
+#Create symbolic links
+
 ln -s "$dotfiles_dir/i3/config" ~/.config/i3/config
-
-# Shells
+ln -s "$dotfiles_dir/cava" ~/.config/cava
+ln -s "$dotfiles_dir/dmenu" ~/.config/dmenu
 ln -s "$dotfiles_dir/.zshrc" ~/.zshrc
 ln -s "$dotfiles_dir/.bashrc" ~/.bashrc
-
-
-# Aliasing
 ln -s "$dotfiles_dir/.bash_aliases" ~/.bash_aliases
-
-# Cava
-ln -s "$dotfiles_dir/cava" ~/.config/cava
-
-# Dmenu
-ln -s "$dotfiles_dir/dmenu" ~/.config/dmenu
-
-# Dmenu
 ln -s "$dotfiles_dir/fonts" ~/fonts
-
-# Scripts
 ln -s "$dotfiles_dir/scripts" ~/scripts
-
-# Scripts
 ln -s "$dotfiles_dir/themes" ~/themes
-
-# Tmux
 ln -s "$dotfiles_dir/.tmux.conf" ~/.tmux.conf
-
-# Rofi
 ln -s "$dotfiles_dir/rofi/config" ~/.config/rofi/config
-
-# Polybar
 ln -s "$dotfiles_dir/polybar/config" ~/.config/polybar/config
-
-# Neovim
 ln -s "$dotfiles_dir/nvim/init.vim" ~/.config/nvim/init.vim
-
-# urxvt
 ln -s "$dotfiles_dir/.Xresources" ~/.Xresources
-
-# Picom
 ln -s "$dotfiles_dir/picom/picom.conf" ~/.config/picom/picom.conf
-
-# mpv
 ln -s "$dotfiles_dir/mpv/mpv.conf" ~/.config/mpv/mpv.conf
-
-# File templates for neovim
 ln -s "$dotfiles_dir/file_templates" ~/file_templates
 
 echo "Symbolic links created!"
 
+# Make workflow folders if they dont already exist.
 mkdir -p $HOME/documentation/best_practice
 mkdir -p $HOME/documentation/business_processes
 mkdir -p $HOME/documentation/meeting_notes
@@ -103,29 +112,23 @@ mkdir -p $HOME/documentation/technical_guides
 mkdir -p $HOME/documentation/technical_training
 mkdir -p $HOME/documentation/user_guides
 mkdir -p $HOME/documentation/workflow
-
 mkdir -p $HOME/learning/IT
 mkdir -p $HOME/learning/science
-
 mkdir -p $HOME/_tickets/archive
 mkdir -p $HOME/_tickets/personal_projects
 mkdir -p $HOME/_tickets/sample_ticket
 mkdir -p $HOME/_tickets/change_requests
-
 mkdir -p $HOME/_todo/sample_ticket
-
 mkdir -p $HOME/ad_hoc_backups
 mkdir -p $HOME/ad_hoc_restores
-
 mkdir -p $HOME/personal_development/career_plans/biology
 mkdir -p $HOME/personal_development/career_plans/software_dev
 mkdir -p $HOME/personal_development/career_plans/data_engineer
-
 mkdir -p $HOME/resources
 mkdir -p $HOME/keys
 mkdir -p $HOME/wallapers
 
-git clone https://github.com/tmux-plugins/tpm "$HOME/.config"/tmux/.tmux/plugins/tpm
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 git clone https://github.com/zpm-zsh/autoenv ~/.oh-my-zsh/custom/plugins/autoenv
 git clone https://github.com/zsh-users/zsh-syntax-highlighting ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
