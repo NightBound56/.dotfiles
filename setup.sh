@@ -95,7 +95,7 @@ copy_env_file prod $HOME
 
 
 
-sudo pacman -S onboard git zsh jq wget tmux mdcat neovim picom i3-wm rofi curl rxvt-unicode urxvt-perls xsel lsd --noconfirm
+sudo pacman -S sed onboard git zsh jq wget tmux mdcat neovim picom i3-wm rofi curl rxvt-unicode urxvt-perls xsel lsd --noconfirm
 yay -S betterlockscreen cava --noconfirm
 
 
