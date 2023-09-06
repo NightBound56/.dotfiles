@@ -1,5 +1,6 @@
 ! One Dark color scheme
-URxvt.background: [90]#282c34
+! URxvt.background: [90]#282c34
+URxvt.background: rgba:28/2c/34/80
 URxvt.foreground: #abb2bf
 URxvt.color0: #1e2127
 URxvt.color1: #e06c75
