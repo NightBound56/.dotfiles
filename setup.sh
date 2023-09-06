@@ -17,7 +17,7 @@ create_custom_venv() {
             echo "Virtual environment '$environment_name' created in $venv_dir."
             
             # Create .env file with environment path
-            env_file="$venv_dir/$environment_name/.env"
+            env_file="$venv_dir/$environment_name.env"
             echo "VIRTUAL_ENV=$venv_dir/$environment_name" > "$env_file"
             echo "Activated by autoenv" >> "$env_file"
             
