@@ -1,4 +1,48 @@
 #!/bin/bash
+
+clone_git_repo() {
+    # Check the number of parameters
+    if [ "$#" -ne 2 ]; then
+        echo "Incorrect number of parameters provided"
+        return
+    fi
+	
+	if [ "$#" eq 2 ]; then
+        echo "Attempting clone of $1"
+        return
+    fi
+
+    local repo_url="$1"
+    local destination="$2"
+
+    # Check if both parameters are provided
+    if [ -z "$repo_url" ] || [ -z "$destination" ]; then
+        echo "Incorrect number of parameters provided"
+        return
+    fi
+
+    # Check if destination contains environment variables and expand them
+    destination=$(eval echo "$destination")
+
+    # Check if the destination directory exists
+    if [ -d "$destination" ]; then
+        # Check if it's a Git repository
+        if [ -d "$destination/.git" ]; then
+            # Update the existing repository using git pull
+            cd "$destination" || return
+            git pull
+            echo "The existing repo was updated using a pull"
+        else
+            echo "The destination had a folder with the same name as the repo, clone aborted."
+        fi
+    else
+        # Clone the Git repository to the destination
+        git clone "$repo_url" "$destination"
+        echo "The repo cloned successfully."
+    fi
+}
+
+
 create_custom_venv() {
     environment_name="$1"
     venv_dir="$HOME/venvs"
@@ -163,7 +207,9 @@ mkdir -p $HOME/wallapers
 
 
 # grab repo's and scripts from third parties
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+clone_git_repo "https://github.com/tmux-plugins/tpm" "~/.tmux/plugins/tpm"
+
+#git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 # ZSH plugins
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 git clone https://github.com/zpm-zsh/autoenv ~/.oh-my-zsh/custom/plugins/autoenv
@@ -188,5 +234,3 @@ directory="$HOME/fonts"; if [ ! -d "$directory" ]; then echo "Error: Directory n
 
 # Update terminal
 xrdb -merge ~/.Xresources
-
-
