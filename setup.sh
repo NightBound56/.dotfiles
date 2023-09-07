@@ -42,38 +42,30 @@ clone_git_repo() {
     fi
 }
 
-
 create_custom_venv() {
-    environment_name="$1"
-    venv_dir="$HOME/venvs"
+    local environment_name="$1"
+    local venv_dir="$HOME/venvs"
+    local venv_path="$venv_dir/$environment_name"
+    local env_file="$venv_path/.env"
 
-    if [ -z "$environment_name" ]; then
-        echo "Please provide an environment name as a parameter."
-        return 1
-    fi
-
-    # Check if Python is installed and venv module is available
-    if command -v python &> /dev/null && python -c "import venv" &> /dev/null; then
-        # Check if the named virtual environment directory exists within the custom directory
-        if [ ! -d "$venv_dir/$environment_name" ]; then
-            # Create the named virtual environment within the custom directory
-            python -m venv "$venv_dir/$environment_name"
-            echo "Virtual environment '$environment_name' created in $venv_dir."
-            
-            # Create .env file with environment path
-            env_file="$venv_dir/$environment_name.env"
-            echo "VIRTUAL_ENV=$venv_dir/$environment_name" > "$env_file"
-            echo "Activated by autoenv" >> "$env_file"
-            
-            echo "Environment path saved in $env_file."
-        else
-            echo "Virtual environment '$environment_name' already exists in $venv_dir."
-        fi
+    # Check if the virtual environment already exists
+    if workon | grep -q "$environment_name"; then
+        echo "Virtual environment '$environment_name' found. Removing..."
+        rmvirtualenv "$environment_name"  # Remove the virtual environment
+        rm -r "$venv_path"  # Remove its directory
+        echo "Virtual environment '$environment_name' removed."
     else
-        echo "Python is not installed or venv module is unavailable. Please check your setup."
-        return 1
+        echo "Creating a new virtual environment '$environment_name'..."
+        python -m venv "$venv_path"  # Create a new virtual environment
+        echo "Virtual environment '$environment_name' created in '$venv_dir'."
+
+        # Create .env file with the virtual environment path
+        echo "export VIRTUAL_ENV=\"$venv_path\"" > "$env_file"
+        echo "export PATH=\"\$VIRTUAL_ENV/bin:\$PATH\"" >> "$env_file"
+        echo "Virtual environment path added to '$env_file'."
     fi
 }
+
 
 copy_env_file() {
     # Check if both parameters are provided
@@ -141,8 +133,8 @@ copy_env_file prod $HOME
 
 
 
-sudo pacman -S sed onboard git zsh jq wget tmux mdcat neovim picom i3-wm rofi curl rxvt-unicode urxvt-perls xsel lsd --noconfirm
-yay -S betterlockscreen cava --noconfirm
+sudo pacman -qS grep sed onboard git zsh jq wget tmux mdcat neovim picom i3-wm rofi curl rxvt-unicode urxvt-perls xsel lsd --noconfirm
+yay -S betterlockscreen cava --noconfirm --quiet
 
 
 # create directories for symbolic links (if they dont already exist), if there is already a symbolic link then remove it.
@@ -209,15 +201,14 @@ mkdir -p $HOME/wallapers
 # grab repo's and scripts from third parties
 clone_git_repo "https://github.com/tmux-plugins/tpm" "~/.tmux/plugins/tpm"
 
-#git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 # ZSH plugins
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-git clone https://github.com/zpm-zsh/autoenv ~/.oh-my-zsh/custom/plugins/autoenv
-git clone https://github.com/zsh-users/zsh-syntax-highlighting ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
-git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
-git clone https://github.com/zsh-users/zsh-completions ~/.oh-my-zsh/custom/plugins/zsh-completions
+clone_git_repo "https://github.com/zpm-zsh/autoenv" "~/.oh-my-zsh/custom/plugins/autoenv"
+clone_git_repo "https://github.com/zsh-users/zsh-syntax-highlighting" "~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
+clone_git_repo "https://github.com/zsh-users/zsh-autosuggestions" "~/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+clone_git_repo "https://github.com/zsh-users/zsh-completions" "~/.oh-my-zsh/custom/plugins/zsh-completions"
 # Clone in wallpapers for onedark theme
-git clone https://github.com/Narmis-E/onedark-wallpapers ~/wallpapers
+clone_git_repo "https://github.com/Narmis-E/onedark-wallpapers" "~/wallpapers"
 
 # nvim plugin manager
 sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
