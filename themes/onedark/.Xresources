@@ -1,6 +1,3 @@
-! One Dark color scheme for urxvt
-#include "$HOME/themes/onedark/onedark.Xresources"
-
 ! Font settings
 URxvt.font: xft:DejaVu Sans Mono:size=12
 
@@ -36,3 +33,24 @@ URxvt.secondaryWheel: true
 
 ! Save a backup of the configuration to apply changes
 URxvt.saveLines: 10000
+
+! One Dark color scheme
+! URxvt.background: [90]#282c34
+URxvt.background: rgba:28/2c/34/80
+URxvt.foreground: #abb2bf
+URxvt.color0: #1e2127
+URxvt.color1: #e06c75
+URxvt.color2: #98c379
+URxvt.color3: #d19a66
+URxvt.color4: #61afef
+URxvt.color5: #c678dd
+URxvt.color6: #56b6c2
+URxvt.color7: #5c6370
+URxvt.color8: #3e4451
+URxvt.color9: #e06c75
+URxvt.color10: #98c379
+URxvt.color11: #d19a66
+URxvt.color12: #61afef
+URxvt.color13: #c678dd
+URxvt.color14: #56b6c2
+URxvt.color15: #abb2bf

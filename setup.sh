@@ -79,7 +79,9 @@ create_symbolic_link() {
     ln -s "$target" "$destination"
 }
 
+
 dotfiles_dir="$HOME/.dotfiles"
+
 
 
 cd $HOME
@@ -113,6 +115,7 @@ prep_directories "$HOME/fonts"
 prep_directories "$HOME/themes"
 
 #Create symbolic links
+ln -s "$dotfiles_dir/themes/onedark/.Xresources" ~/.Xresources
 ln -s "$dotfiles_dir/i3/config" ~/.config/i3/config
 ln -s "$dotfiles_dir/cava" ~/.config/cava
 ln -s "$dotfiles_dir/dmenu" ~/.config/dmenu
@@ -123,13 +126,12 @@ ln -s "$dotfiles_dir/picom/picom.conf" ~/.config/picom/picom.conf
 ln -s "$dotfiles_dir/mpv/mpv.conf" ~/.config/mpv/mpv.conf
 ln -s "$dotfiles_dir/scripts" ~/scripts
 ln -s "$dotfiles_dir/fonts" ~/fonts
-ln -s "$dotfiles_dir/themes" ~/themes
+
 
 ln -s "$dotfiles_dir/.zshrc" ~/.zshrc
 ln -s "$dotfiles_dir/.bashrc" ~/.bashrc
 ln -s "$dotfiles_dir/.bash_aliases" ~/.bash_aliases
 ln -s "$dotfiles_dir/.tmux.conf" ~/.tmux.conf
-ln -s "$dotfiles_dir/.Xresources" ~/.Xresources
 ln -s "$dotfiles_dir/file_templates" ~/file_templates
 
 echo "Symbolic links created!"
@@ -159,6 +161,7 @@ mkdir -p $HOME/resources
 mkdir -p $HOME/keys
 mkdir -p $HOME/wallapers
 
+
 # grab repo's and scripts from third parties
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 # ZSH plugins
@@ -177,8 +180,13 @@ sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.
 #Make scripts executable
 find $HOME/scripts -type f -name "*.sh" -exec chmod +x {} \;
 
-# Update terminal after symlinking config.
-xrdb -merge ~/.Xresources
 
 # install fonts
 directory="$HOME/fonts"; if [ ! -d "$directory" ]; then echo "Error: Directory not found."; exit 1; fi; echo "Installing fonts from $directory..."; mkdir -p "$HOME/.fonts"; find "$directory" -type f \( -name "*.otf" -o -name "*.ttf" \) -print0 | while IFS= read -r -d '' fontfile; do fontname=$(basename "$fontfile"); if fc-list | grep -q "$fontname"; then echo "Font $fontname is already installed."; else cp "$fontfile" "$HOME/.fonts/"; echo "Installed font: $fontname"; fi; done; echo "Updating font cache..."; fc-cache -f -v; echo "Font installation complete."
+
+# this avoids tracking username details in the Xresources file during commit. Aim was to create a symbolic link to a theme based file, but urxvt had issues with env vars.
+
+# Update terminal
+xrdb -merge ~/.Xresources
+
+
