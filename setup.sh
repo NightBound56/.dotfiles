@@ -6,11 +6,6 @@ clone_git_repo() {
         echo "Incorrect number of parameters provided"
         return
     fi
-	
-	if [ "$#" eq 2 ]; then
-        echo "Attempting clone of $1"
-        return
-    fi
 
     local repo_url="$1"
     local destination="$2"
@@ -49,22 +44,22 @@ create_custom_venv() {
     local env_file="$venv_path/.env"
 
     # Check if the virtual environment already exists
-    if workon | grep -q "$environment_name"; then
+    if [ -d "$venv_path" ]; then
         echo "Virtual environment '$environment_name' found. Removing..."
-        rmvirtualenv "$environment_name"  # Remove the virtual environment
         rm -r "$venv_path"  # Remove its directory
         echo "Virtual environment '$environment_name' removed."
-    else
-        echo "Creating a new virtual environment '$environment_name'..."
-        python -m venv "$venv_path"  # Create a new virtual environment
-        echo "Virtual environment '$environment_name' created in '$venv_dir'."
-
-        # Create .env file with the virtual environment path
-        echo "export VIRTUAL_ENV=\"$venv_path\"" > "$env_file"
-        echo "export PATH=\"\$VIRTUAL_ENV/bin:\$PATH\"" >> "$env_file"
-        echo "Virtual environment path added to '$env_file'."
     fi
+
+    echo "Creating a new virtual environment '$environment_name'..."
+    python -m venv "$venv_path"  # Create a new virtual environment
+    echo "Virtual environment '$environment_name' created in '$venv_dir'."
+
+    # Create .env file with the virtual environment path
+    echo "export VIRTUAL_ENV=\"$venv_path\"" > "$env_file"
+    echo "export PATH=\"\$VIRTUAL_ENV/bin:\$PATH\"" >> "$env_file"
+    echo "Virtual environment path added to '$env_file'."
 }
+
 
 
 copy_env_file() {
