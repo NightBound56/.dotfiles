@@ -176,10 +176,9 @@ mkdir -p $HOME/documentation/technical_guides
 mkdir -p $HOME/documentation/technical_training
 mkdir -p $HOME/documentation/user_guides
 mkdir -p $HOME/documentation/workflow
-mkdir -p $HOME/learning/IT
+mkdir -p $HOME/learning/IT/
 mkdir -p $HOME/learning/science
 mkdir -p $HOME/_tickets/archive
-mkdir -p $HOME/_tickets/personal_projects
 mkdir -p $HOME/_tickets/sample_ticket
 mkdir -p $HOME/_tickets/change_requests
 mkdir -p $HOME/_todo/sample_ticket
@@ -191,6 +190,10 @@ mkdir -p $HOME/personal_development/career_plans/data_engineer
 mkdir -p $HOME/resources
 mkdir -p $HOME/keys
 mkdir -p $HOME/wallapers
+mkdir -p $HOME/software_dev/prod
+mkdir -p $HOME/software_dev/test
+mkdir -p $HOME/software_dev/dev
+
 
 
 # grab repo's and scripts from third parties
