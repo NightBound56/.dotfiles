@@ -1,5 +1,5 @@
 ! Font settings
-URxvt.font: xft:DejaVu Sans Mono:size=12
+URxvt.font: xft:HackNerdFont-Regular:size=10
 
 ! Cursor style
 URxvt.cursorColor: #abb2bf
