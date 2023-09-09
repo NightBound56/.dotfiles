@@ -223,3 +223,7 @@ directory="$HOME/fonts"; if [ ! -d "$directory" ]; then echo "Error: Directory n
 
 # Update terminal
 xrdb -merge ~/.Xresources
+
+#Clone Powerlevel 10k and add it the to symlinked .zshrc.
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
+echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
