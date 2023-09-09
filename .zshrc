@@ -32,37 +32,29 @@ fi
 function cd() {
     builtin cd "$@" # This ensures the normal 'cd' behavior.
 
-    local pythonEnv=$(basename $VIRTUAL_ENV)
-
     # Define your virtual environment activation and prompt based on directory path.
     case "$(pwd)" in
         "$HOME")
             source "$HOME/venvs/prod/bin/activate" # Change 'venv_home' to your desired home directory virtual environment
-            PROMPT="%n@%m:%~ "$pythonEnv" %# " # Customize the prompt for the home directory
             ;;
 		"$HOME/Downloads")
             source "$HOME/venvs/prod/bin/activate" # Change 'venv_home' to your desired home directory virtual environment
-            PROMPT="%n@%m:%~ "$pythonEnv" %# " # Customize the prompt for the home directory
             ;;
 		"$HOME/.config")
             source "$HOME/venvs/prod/bin/activate" # Change 'venv_home' to your desired home directory virtual environment
-            PROMPT="%n@%m:%~ "$pythonEnv" %# " # Customize the prompt for the home directory
             ;;
         "$HOME/software_dev/prod")
             source "$HOME/venvs/prod/bin/activate"
-            PROMPT="%n@%m:%~ "$pythonEnv" %# " # Customize the prompt for dir2
             ;;
         "$HOME/software_dev/dev")
             source "$HOME/venvs/dev/bin/activate"
-            PROMPT="%n@%m:%~ "$pythonEnv" %# " # Customize the prompt for dir3
             ;;
 		"$HOME/software_dev/test")
             source "$HOME/venvs/test/bin/activate"
-            PROMPT="%n@%m:%~ "$pythonEnv" %# " # Customize the prompt for dir3
             ;;	
 		
         *)
-            PROMPT='%n@%m:%~ %# ' # Default prompt for other directories
+            source "$HOME/venvs/prod/bin/activate"
             ;;
     esac
 }
