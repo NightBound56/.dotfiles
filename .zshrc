@@ -1,4 +1,6 @@
 export ZSH="$HOME/.oh-my-zsh"
+
+
 ZSH_THEME="agnoster"
 
 # Uncomment one of the following lines to change the auto-update behavior
@@ -28,20 +30,21 @@ else
   export EDITOR='nvim'
 fi
 
+if [[ -z "$VIRTUAL_ENV" ]]; then
+    source "$HOME/venvs/prod/bin/activate"
+fi
+
 
 function cd() {
-    builtin cd "$@" # This ensures the normal 'cd' behavior.
+    # Store the current theme.
+    local current_theme="$ZSH_THEME"
 
-    # Define your virtual environment activation and prompt based on directory path.
+    builtin cd "$@"  # This ensures the normal 'cd' behavior.
+
+    # Define your virtual environment activation based on directory path.
     case "$(pwd)" in
-        "$HOME")
-            source "$HOME/venvs/prod/bin/activate" # Change 'venv_home' to your desired home directory virtual environment
-            ;;
-		"$HOME/Downloads")
-            source "$HOME/venvs/prod/bin/activate" # Change 'venv_home' to your desired home directory virtual environment
-            ;;
-		"$HOME/.config")
-            source "$HOME/venvs/prod/bin/activate" # Change 'venv_home' to your desired home directory virtual environment
+        "$HOME" | "$HOME/Downloads" | "$HOME/.config")
+            source "$HOME/venvs/prod/bin/activate" # Change to your desired virtual environment path.
             ;;
         "$HOME/software_dev/prod")
             source "$HOME/venvs/prod/bin/activate"
@@ -49,12 +52,16 @@ function cd() {
         "$HOME/software_dev/dev")
             source "$HOME/venvs/dev/bin/activate"
             ;;
-		"$HOME/software_dev/test")
+        "$HOME/software_dev/test")
             source "$HOME/venvs/test/bin/activate"
-            ;;	
-		
+            ;;
         *)
-            source "$HOME/venvs/prod/bin/activate"
+            source "$HOME/venvs/prod/bin/activate" # Default virtual environment.
             ;;
     esac
+
+    # Restore the original theme.
+    ZSH_THEME="$current_theme"
 }
+
+
