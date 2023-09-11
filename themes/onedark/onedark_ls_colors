@@ -1,0 +1,100 @@
+# One Dark LS_COLORS Theme
+
+# Directory
+DIR 01;34
+
+# Executable files
+EXEC 01;32
+
+# Symbolic links
+LINK 01;36
+
+# Socket files
+SOCK 01;35
+
+# Pipe files
+FIFO 01;33
+
+# Block device files
+BD 01;33
+
+# Character device files
+CD 01;33
+
+# Archive files
+*.zip 01;31
+*.tar 01;31
+*.gz 01;31
+*.bz2 01;31
+*.xz 01;31
+*.rar 01;31
+*.7z 01;31
+
+# Compressed files
+*.zst 01;31
+
+# Image files
+*.jpg 01;35
+*.jpeg 01;35
+*.png 01;35
+*.gif 01;35
+*.bmp 01;35
+*.svg 01;35
+
+# Audio files
+*.mp3 01;36
+*.wav 01;36
+*.flac 01;36
+*.ogg 01;36
+
+# Video files
+*.mp4 01;31
+*.avi 01;31
+*.mkv 01;31
+*.mov 01;31
+
+# Document files
+*.txt 00;37
+*.pdf 00;37
+*.doc 00;37
+*.docx 00;37
+*.xls 00;37
+*.xlsx 00;37
+*.ppt 00;37
+*.pptx 00;37
+*.odt 00;37
+*.ods 00;37
+
+# Script and markup files
+*.html 01;33
+*.xml 01;33
+*.json 01;33
+*.yaml 01;33
+*.yml 01;33
+*.md 01;33
+
+# Source code files
+*.c 01;37
+*.cpp 01;37
+*.h 01;37
+*.hpp 01;37
+*.java 01;37
+*.py 01;37
+*.js 01;37
+*.css 01;37
+
+# Log files
+*.log 00;33
+
+# Configuration files
+*.conf 01;33
+*.cfg 01;33
+*.ini 01;33
+
+# Shell configuration files
+.bashrc 00;32
+.zshrc 00;32
+.profile 00;32
+
+# Default for other file types
+* 00
