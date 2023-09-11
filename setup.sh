@@ -163,6 +163,7 @@ ln -s "$dotfiles_dir/.bashrc" ~/.bashrc
 ln -s "$dotfiles_dir/.bash_aliases" ~/.bash_aliases
 ln -s "$dotfiles_dir/.tmux.conf" ~/.tmux.conf
 ln -s "$dotfiles_dir/file_templates" ~/file_templates
+ln -s "$dotfiles_dir/themes/onedark" ~/themes/onedark
 
 echo "Symbolic links created!"
 
