@@ -71,6 +71,29 @@ function cd() {
     ZSH_THEME="$current_theme"
 }
 
+# LS_COLORS definition for improved file type colorization
+LS_COLORS="
+
+# Directories
+di=38;5;33  # Directory
+ln=38;5;37  # Symbolic Link
+
+# Executables
+ex=38;5;107  # Executable
+
+# ... (Add the rest of the LS_COLORS definition here) ...
+
+# Text files
+*.txt=38;5;245  # Plain text
+*.md=38;5;245  # Markdown file
+*.markdown=38;5;245  # Markdown file
+*.org=38;5;245  # Org-mode file
+"
+
+export LS_COLORS
+
+
+
 
 source ~/powerlevel10k/powerlevel10k.zsh-theme
 
