@@ -72,6 +72,10 @@ function cd() {
 }
 
 
+if [ -e $HOME/.bash_aliases ]; then
+    source $HOME/.bash_aliases
+fi
+
 eval $(dircolors $HOME/themes/onedark/onedark_ls_colors)
 source ~/powerlevel10k/powerlevel10k.zsh-theme
 
