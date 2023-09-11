@@ -66,5 +66,6 @@ if [ -e $HOME/.bash_aliases ]; then
 fi
 
 eval $(dircolors $HOME/themes/onedark/onedark_ls_colors)
-source ~/powerlevel10k/powerlevel10k.zsh-theme
+export TERMINAL=urxvt
+
 source ~/powerlevel10k/powerlevel10k.zsh-theme

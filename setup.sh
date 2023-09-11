@@ -112,8 +112,6 @@ create_symbolic_link() {
 
 dotfiles_dir="$HOME/.dotfiles"
 
-
-
 cd $HOME
 
 # Set up python environments and create template .env files.
@@ -124,9 +122,7 @@ create_custom_venv prod
 
 copy_env_file prod $HOME
 
-
-
-
+#install required packages for ricing both from arch repos and AUR
 sudo pacman -qS grep sed onboard git zsh jq wget tmux mdcat neovim picom i3-wm rofi curl rxvt-unicode urxvt-perls xsel lsd --noconfirm
 yay -S betterlockscreen cava --noconfirm --quiet
 
@@ -146,25 +142,23 @@ prep_directories "$HOME/themes"
 
 #Create symbolic links
 ln -s "$dotfiles_dir/themes/onedark/.Xresources" ~/.Xresources
-ln -s "$dotfiles_dir/i3/config" ~/.config/i3/config
-ln -s "$dotfiles_dir/cava" ~/.config/cava
-ln -s "$dotfiles_dir/dmenu" ~/.config/dmenu
-ln -s "$dotfiles_dir/rofi/config" ~/.config/rofi/config
-ln -s "$dotfiles_dir/polybar/config" ~/.config/polybar/config
-ln -s "$dotfiles_dir/nvim/init.vim" ~/.config/nvim/init.vim
-ln -s "$dotfiles_dir/picom/picom.conf" ~/.config/picom/picom.conf
-ln -s "$dotfiles_dir/mpv/mpv.conf" ~/.config/mpv/mpv.conf
-ln -s "$dotfiles_dir/scripts" ~/scripts
+ln -s "$dotfiles_dir/i3/config" ~/.config/i3/config #tiling window manager multiple virtual desktops with apps opening on them by default.
+ln -s "$dotfiles_dir/cava" ~/.config/cava #terminal audio visualisation, needs more work.
+ln -s "$dotfiles_dir/dmenu" ~/.config/dmenu #terminal based launcher for apps
+ln -s "$dotfiles_dir/rofi/config" ~/.config/rofi/config #alternative to dmenu
+ln -s "$dotfiles_dir/polybar/config" ~/.config/polybar/config #tiny menubar showing system stats and results of scripts.
+ln -s "$dotfiles_dir/nvim/init.vim" ~/.config/nvim/init.vim #neonim config
+ln -s "$dotfiles_dir/picom/picom.conf" ~/.config/picom/picom.conf #display manager for i3
+ln -s "$dotfiles_dir/mpv/mpv.conf" ~/.config/mpv/mpv.conf #movie player
+ln -s "$dotfiles_dir/scripts" ~/scripts #script library
 ln -s "$dotfiles_dir/fonts" ~/fonts
-
-
-ln -s "$dotfiles_dir/.zshrc" ~/.zshrc
-ln -s "$dotfiles_dir/.bashrc" ~/.bashrc
-ln -s "$dotfiles_dir/.bash_aliases" ~/.bash_aliases
-ln -s "$dotfiles_dir/.tmux.conf" ~/.tmux.conf
-ln -s "$dotfiles_dir/file_templates" ~/file_templates
-ln -s "$dotfiles_dir/themes/onedark" ~/themes/onedark
-
+ln -s "$dotfiles_dir/.zshrc" ~/.zshrc # zsh/oh-my-zsh/powerline10k config file
+ln -s "$dotfiles_dir/.bashrc" ~/.bashrc # basic bash shell if i need to revert from zsh
+ln -s "$dotfiles_dir/.bash_aliases" ~/.bash_aliases #used for both bash and zsh for short hand commands
+ln -s "$dotfiles_dir/.p10k.zsh" ~/.p10k.zsh
+ln -s "$dotfiles_dir/.tmux.conf" ~/.tmux.conf #terminal multiplexer - mostly specifies keybindings for terminal management, split screens etc.
+ln -s "$dotfiles_dir/file_templates" ~/file_templates #using neovim as an editor the are default template files used each time I scaffold a file.
+ln -s "$dotfiles_dir/themes/onedark" ~/themes/onedark #a lot of config files reference files in this folder that use the one dark color theme. May be able to make a theme switcher in future
 echo "Symbolic links created!"
 
 # Make workflow folders if they dont already exist. These dont point to config files in the git repo.
@@ -224,6 +218,6 @@ directory="$HOME/fonts"; if [ ! -d "$directory" ]; then echo "Error: Directory n
 # Update terminal
 xrdb -merge ~/.Xresources
 
-#Clone Powerlevel 10k and add it the to symlinked .zshrc.
+#Clone Powerlevel 10k dont need bottom line as its already in .zshrc only need this line as it has the depth flag.
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
-echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
+# echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
