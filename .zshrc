@@ -7,28 +7,13 @@ fi
 
 export ZSH="$HOME/.oh-my-zsh"
 
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+source ~/powerlevel10k/powerlevel10k.zsh-theme
+
+# Set your ZSH_THEME after sourcing the Powerlevel10k theme.
 ZSH_THEME="powerlevel10k/powerlevel10k"
-
-# Uncomment one of the following lines to change the auto-update behavior
-zstyle ':omz:update' mode auto      # update automatically without asking
-
-# Uncomment the following line to change how often to auto-update (in days).
-zstyle ':omz:update' frequency 31
-
-plugins=(
-  git
-  zsh-syntax-highlighting
-  zsh-autosuggestions
-  zsh-completions
-  autoenv
-  command-not-found
-  emoji
-  tmux
-  ufw
-)
-
-source $ZSH/oh-my-zsh.sh
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
@@ -41,6 +26,11 @@ if [[ -z "$VIRTUAL_ENV" ]]; then
     source "$HOME/venvs/prod/bin/activate"
 fi
 
+# Move any commands that perform console I/O after the instant prompt preamble
+# to a later part of the file to avoid conflicts with instant prompt.
+
+# The following lines perform console I/O and should be moved down
+# to a later part of the file:
 
 function cd() {
     # Store the current theme.
@@ -71,13 +61,8 @@ function cd() {
     ZSH_THEME="$current_theme"
 }
 
-
 if [ -e $HOME/.bash_aliases ]; then
     source $HOME/.bash_aliases
 fi
 
 eval $(dircolors $HOME/themes/onedark/onedark_ls_colors)
-source ~/powerlevel10k/powerlevel10k.zsh-theme
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
