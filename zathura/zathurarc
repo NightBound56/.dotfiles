@@ -1,7 +1,7 @@
 # Zathura Configuration
 
 # Fonts
-set font "Verdana 12"  # You can use "Verdana" or the equivalent Linux font
+set font "HackNerdFont-Regular 10"
 
 # Page layout
 set pages-per-row 1

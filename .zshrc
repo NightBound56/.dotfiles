@@ -67,5 +67,3 @@ fi
 
 eval $(dircolors $HOME/themes/onedark/onedark_ls_colors)
 export TERMINAL=urxvt
-
-source ~/powerlevel10k/powerlevel10k.zsh-theme
