@@ -82,6 +82,7 @@ Plug 'romgrk/barbar.nvim'
 Plug 'lewis6991/gitsigns.nvim'
 Plug 'numToStr/Comment.nvim'
 Plug 'karb94/neoscroll.nvim'
+Plug 'norcalli/nvim-colorizer.lua
 
 call plug#end()
 lua require('Comment').setup()
