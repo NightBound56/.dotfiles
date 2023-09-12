@@ -1,0 +1,36 @@
+# Zathura Configuration
+
+# Fonts
+set font "Verdana 12"  # You can use "Verdana" or the equivalent Linux font
+
+# Page layout
+set pages-per-row 1
+set page-padding 10
+
+# Zoom settings
+set zoom-min-level 50
+set zoom-max-level 400
+set zoom-step 10
+
+# Status bar
+set statusbar-basename true
+set statusbar-page-number true
+set statusbar-zoom true
+set statusbar-author true  # Add author information to the status bar
+set statusbar-pages true  # Display total number of pages in the status bar
+
+# Fullscreen mode
+set fullscreen true
+
+# External programs
+# Use Firefox to open URLs
+set uri-command "firefox %s"
+
+# Use feh as the image viewer for images in PDFs
+set image-uri-command "feh %s"
+
+# Use espeak for text-to-speech
+set selection-command "espeak %s"  # You can specify additional options for espeak as needed
+
+# Include the color definitions from onedark-zathura
+source "$HOME/themes/onedark/onedark-zathura"

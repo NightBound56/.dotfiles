@@ -1,0 +1,9 @@
+# onedark-zathura
+
+# Colors (OneDark theme)
+set default-bg #282c34
+set default-fg #abb2bf
+set statusbar-bg #21252b
+set statusbar-fg #abb2bf
+set inputbar-bg #21252b
+set inputbar-fg #abb2bf

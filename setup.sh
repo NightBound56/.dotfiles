@@ -123,7 +123,7 @@ create_custom_venv prod
 copy_env_file prod $HOME
 
 #install required packages for ricing both from arch repos and AUR
-sudo pacman -qS grep sed onboard git zsh jq wget tmux mdcat neovim picom i3-wm rofi curl rxvt-unicode urxvt-perls xsel lsd --noconfirm
+sudo pacman -qS grep sed onboard git zsh jq wget tmux mdcat neovim picom i3-wm rofi curl rxvt-unicode urxvt-perls xsel lsd zathura zathura-cb zathura-pdf-mupdf --noconfirm
 yay -S betterlockscreen cava --noconfirm --quiet
 
 
@@ -143,7 +143,7 @@ prep_directories "$HOME/themes"
 #Create symbolic links
 ln -s "$dotfiles_dir/themes/onedark/.Xresources" ~/.Xresources
 ln -s "$dotfiles_dir/i3/config" ~/.config/i3/config #tiling window manager multiple virtual desktops with apps opening on them by default.
-ln -s "$dotfiles_dir/cava" ~/.config/cava #terminal audio visualisation, needs more work.
+ln -s "$dotfiles_dir/cava/cava.conf" ~/.config/cava/cava.conf #terminal audio visualisation, needs more work.
 ln -s "$dotfiles_dir/dmenu" ~/.config/dmenu #terminal based launcher for apps
 ln -s "$dotfiles_dir/rofi/config" ~/.config/rofi/config #alternative to dmenu
 ln -s "$dotfiles_dir/polybar/config" ~/.config/polybar/config #tiny menubar showing system stats and results of scripts.
