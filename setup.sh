@@ -123,7 +123,7 @@ create_custom_venv prod
 copy_env_file prod $HOME
 
 #install required packages for ricing both from arch repos and AUR
-sudo pacman -qS grep sed onboard git zsh jq wget tmux mdcat neovim picom i3-wm rofi curl rxvt-unicode urxvt-perls xsel lsd zathura zathura-cb zathura-pdf-mupdf --noconfirm
+sudo pacman -qS grep sed onboard git zsh jq wget tmux mdcat neovim picom i3-wm rofi curl rxvt-unicode urxvt-perls xsel lsd zathura zathura-cb feh neofetch zathura-pdf-mupdf --noconfirm
 yay -S betterlockscreen cava --noconfirm --quiet
 
 
