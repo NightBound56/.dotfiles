@@ -1,5 +1,12 @@
 #!/bin/bash
 
+#How ro run this script: ./library.sh -f functionOne -a arg1 -a arg2 -a arg3
+# This script will run functions defined here or in other script files.
+# It will sanitise the arguments and execute the function.
+# Scroll down to function definition to check how to validate number of args.
+# Issues are added to a log file that is automatically cleaned.
+# The aim of this function is to bring in a library of various other scripts and functions in a modular way.
+
 # Logging function
 log() {
     local log_dir="logs"
@@ -147,6 +154,7 @@ while getopts "f:a:" opt; do
             ;;
     esac
 done
+
 
 
 CheckArgs "$func_name" "${args[@]}"
