@@ -39,7 +39,7 @@ sanitize_argument() {
     # Define a regular expression to allow alphanumeric characters, underscores,
     # at symbols, periods, hyphens, slashes, parentheses, square brackets, spaces,
     # tilde, question mark, ampersand, and dollar sign
-    local allowed_chars="A-Za-z0-9_@./-()[] ~?&$"
+    local allowed_chars="A-Za-z0-9_@./-()[] ~?&$#"
 
     # Use grep with the -q (quiet) option to check if the argument contains only allowed characters
     if echo "$arg" | grep -Eq "^[${allowed_chars}]+$"; then
@@ -198,6 +198,48 @@ is_installed() {
 # Example usage: if is_installed "package_name";
 
 
+trim() {
+  # Remove leading whitespace
+  local trimmed="${1##* }"
+  # Remove trailing whitespace
+  trimmed="${trimmed%%* }"
+  echo -n "$trimmed"
+}
+# Example usage: result=$(trim "$my_string")
+
+
+extract_alphanumerics() {
+  local input="$1"
+  local result
+  result=$(echo "$input" | tr -cd '[:alnum:] ')
+  echo "$result"
+}
+# Example usage: result=$(extract_alphanumerics "$my_string")
+
+
+replace_space_with_underscore() {
+  local input="$1"
+  # Replace spaces with underscores
+  local replaced="${input// /_}"
+  # Use sed to replace consecutive underscores with a single underscore
+  replaced=$(echo "$replaced" | sed 's/__*/_/g')
+  echo "$replaced"
+}
+# Example usage: result1=$(replace_spaces_with_underscore "$string1")
+
+lower() {
+  local input="$1"
+  local lowercase
+  lowercase=$(echo "$input" | tr '[:upper:]' '[:lower:]')
+  echo "$lowercase"
+}
+
+upper() {
+  local input="$1"
+  local uppercase
+  uppercase=$(echo "$input" | tr '[:lower:]' '[:upper:]')
+  echo "$uppercase"
+}
 
 
 # Media functions
