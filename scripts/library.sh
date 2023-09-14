@@ -132,6 +132,74 @@ validate_arg_num() {
 #    # Rest of function001's code
 #}
 
+# General functions needed across all scripts
+clear_shell_history() {
+    # Check if the current shell is zsh
+    if [ -n "$ZSH_VERSION" ]; then
+        echo "Clearing zsh history..."
+        cat /dev/null > "$XDG_HOME/.zsh_history"
+        fc -R
+    # Check if the current shell is bash
+    elif [ -n "$BASH_VERSION" ]; then
+        echo "Clearing bash history..."
+        cat /dev/null > "$XDG_HOME/.bash_history"
+        history -c
+        history -r
+    else
+        echo "Unknown shell. Command history not cleared."
+    fi
+}
+
+check_directory_exists() {
+  dir_path="$1"
+  expanded_path=$(eval echo "$dir_path")
+  if [ -d "$expanded_path" ]; then
+    return 0  # Directory exists
+  else
+    return 1  # Directory does not exist
+  fi
+}
+# Example usage:if check_directory_exists "$HOME/Documents";
+
+check_file_exists() {
+  file_path="$1"
+  expanded_path=$(eval echo "$file_path")
+  if [ -f "$expanded_path" ]; then
+    return 0  # File exists
+  else
+    return 1  # File does not exist
+  fi
+}
+# Example usage:if check_file_exists "$HOME/Documents/example.txt";
+
+is_installed() {
+    package_name="$1"
+    
+    # Check if the package manager is apt (Ubuntu)
+    if command -v apt &>/dev/null; then
+        if dpkg -l | grep -q "ii  $package_name "; then
+            return 0
+        else
+            return 1
+        fi
+    # Check if the package manager is pacman (Arch Linux)
+    elif command -v pacman &>/dev/null; then
+        if pacman -Qs "$package_name" &>/dev/null; then
+            return 0
+        elif command -v yay &>/dev/null && yay -Qs "$package_name" &>/dev/null; then
+            return 0
+        else
+            return 1
+        fi
+    else
+        return 1
+    fi
+}
+# Example usage: if is_installed "package_name";
+
+
+
+
 # Media functions
 source ~/scripts/media.sh
 
@@ -140,6 +208,8 @@ source ~/scripts/utils.sh
 
 # Archiving functions - needs more modularising and made compatible with library.
 #source ~/scripts/archiving.sh
+
+
 
 
 
