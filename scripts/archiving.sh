@@ -1,4 +1,5 @@
 # Define a function to clear command history based on the shell
+#Needs to be moved to utils lib
 clear_history() {
     # Check if the current shell is zsh
     if [ -n "$ZSH_VERSION" ]; then
@@ -183,6 +184,4 @@ decrypt_file() {
   fi
 }
 #Catch anything that isnt cleared.
-clear_history
-
-
+#clear_history

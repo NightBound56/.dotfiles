@@ -132,7 +132,14 @@ validate_arg_num() {
 #    # Rest of function001's code
 #}
 
+# Media functions
+source ~/scripts/media.sh
 
+# Utility functions
+source ~/scripts/utils.sh
+
+# Archiving functions - needs more modularising and made compatible with library.
+#source ~/scripts/archiving.sh
 
 
 

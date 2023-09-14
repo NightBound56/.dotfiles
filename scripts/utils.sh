@@ -1,4 +1,14 @@
-#!/bin/bash
+delayed_shutdown() {
+    if [ $# -ne 1 ]; then
+        echo "Usage: delayed_shutdown <minutes>"
+        return 1
+    fi
+
+    minutes="$1"
+
+    echo "Shutdown has been delayed for $minutes minutes. Please enter your password:"
+    sudo -v && sleep "${minutes}m" && sudo shutdown now
+}
 
 shred_dir() {
     # Directory to purge
@@ -28,19 +38,3 @@ shred_dir() {
         echo "Directory '$1' does not exist."
     fi
 }
-
-# Check which function is passed to the script and execute it with args.
-case "$1" in
-    "shred_dir")
-        shift  # Remove the first argument
-        shred_dir "$@"
-        ;;
-    "another_function")
-        shift  # Remove the first argument
-        another_function "$@"
-        ;;
-    *)
-        echo "Usage: $0 {shred_dir|another_function} [args...]"
-        exit 1
-        ;;
-esac
