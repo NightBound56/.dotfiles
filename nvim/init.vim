@@ -67,6 +67,7 @@ call plug#begin()
 "   - Vim (Linux/macOS): '~/.vim/plugged'
 
 Plug 'navarasu/onedark.nvim'
+Plug 'dense-analysis/ale'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.2' }
@@ -82,11 +83,8 @@ Plug 'romgrk/barbar.nvim'
 Plug 'lewis6991/gitsigns.nvim'
 Plug 'numToStr/Comment.nvim'
 Plug 'karb94/neoscroll.nvim'
-Plug 'norcalli/nvim-colorizer.lua
+Plug 'norcalli/nvim-colorizer.lua'
 
 call plug#end()
 lua require('Comment').setup()
 colorscheme onedark
-
-
-
