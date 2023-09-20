@@ -9,9 +9,10 @@
 
 # Logging function
 log() {
+    local log_dir="$HOME/script_logs"
     local log_file="script.log"
     local timestamp=$(date +"%Y-%m-%d %H:%M:%S")
-    local log_path="$HOME/script_logs/$log_file"
+    local log_path="$log_dir/$log_file"
     
     # Check if log directory exists, create it if not
     if [ ! -d "$log_dir" ]; then
@@ -38,7 +39,7 @@ sanitize_argument() {
     # Define a regular expression to allow alphanumeric characters, underscores,
     # at symbols, periods, hyphens, slashes, parentheses, square brackets, spaces,
     # tilde, question mark, ampersand, and dollar sign
-    local allowed_chars="A-Za-z0-9_@./\-()[] ~?&\$#"
+    local allowed_chars="[A-Za-z0-9_@./\-()[] ~?&\$#]"
 
     # Use grep with the -Eq (quiet) option to check if the argument contains only allowed characters
     if echo "$arg" | grep -Eq "^$allowed_chars+$"; then
