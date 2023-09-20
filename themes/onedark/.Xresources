@@ -1,3 +1,5 @@
+URxvt.perl-ext-common: default,xft,clipboard,url-select,matcher
+
 ! Font settings
 URxvt.font: xft:HackNerdFont-Regular:size=8
 
@@ -24,15 +26,14 @@ URxvt.lineSpace: 5
 URxvt.letterSpace: 1
 
 ! URL handling (requires external script)
-URxvt.perl-ext-common: default,url-select,matcher
 URxvt.url-select.launcher: /usr/bin/firefox
 
 ! Clipboard integration
 URxvt.iso14755: false
 URxvt.secondaryWheel: true
 
-URxvt.keysym.C-S-C: eval:paste_clipboard
-URxvt.keysym.C-S-V: eval:selection_to_clipboard
+URxvt.keysym.C-c:      perl:clipboard:copy
+URxvt.keysym.C-v:      perl:clipboard:paste
 
 ! Save a backup of the configuration to apply changes
 URxvt.saveLines: 10000
