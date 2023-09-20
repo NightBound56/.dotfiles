@@ -35,11 +35,11 @@ log() {
 # Function to sanitize and validate arguments
 sanitize_argument() {
     local arg="$1"
-    
+    echo "Entering Sanitizing..."
     # Define a regular expression to allow alphanumeric characters, underscores,
     # at symbols, periods, hyphens, slashes, parentheses, square brackets, spaces,
     # tilde, question mark, ampersand, and dollar sign
-    local allowed_chars="A-Za-z0-9_@./-()[] ~?&$#"
+    local allowed_chars="A-Za-z0-9_@\.\/\(\)\[\] \~\?\&\$#"
 
     # Use grep with the -q (quiet) option to check if the argument contains only allowed characters
     if echo "$arg" | grep -Eq "^[${allowed_chars}]+$"; then
@@ -50,6 +50,7 @@ sanitize_argument() {
         echo "Error: Argument '$arg' contains invalid characters."
         exit 1
     fi
+	echo "Finished Sanitizing..."
 }
 
 
@@ -59,6 +60,7 @@ CheckArgs() {
     shift
     local args=("$@")
 
+	echo "Entering Check args..."
     # Log function start
     log "Function '$func_name' started with arguments: ${args[*]}"
 
@@ -83,6 +85,7 @@ CheckArgs() {
         fi
 
         # Iterate through arguments and validate each one
+		echo "Entering Check For loop of args..."
         all_args_valid=true
         for arg in "${args[@]}"; do
             sanitized_arg=$(sanitize_argument "$arg")
@@ -103,6 +106,7 @@ CheckArgs() {
         log "Error: Function '$func_name' does not exist."
     fi
 
+	echo "Exit Check args..."
     # Log function end
     log "Function '$func_name' completed."
 }
