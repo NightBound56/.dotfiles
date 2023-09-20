@@ -4,13 +4,14 @@ alias ls='ls --color=auto'
 # color grep
 alias grep='grep --color=auto'
 
+
 #Find file recursively
 alias f='find . |grep --color=auto '
 
 # Show hidden files
 alias l.='ls -d .* --color=auto'
 # Diff color
-alias diff='colordiff'
+alias diff='diff --color=auto'
 #Todays date
 alias nowdate='date +"%d-%m-%Y"'
 
