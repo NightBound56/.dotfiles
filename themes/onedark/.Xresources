@@ -37,6 +37,8 @@ URxvt.keysym.C-v:      perl:clipboard:paste
 
 ! Save a backup of the configuration to apply changes
 URxvt.saveLines: 10000
+URxvt.geometry: 1920x1080
+
 
 ! One Dark color scheme
 ! One Dark theme without transparency
