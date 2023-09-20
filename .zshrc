@@ -67,3 +67,7 @@ fi
 
 eval $(dircolors $HOME/themes/onedark/onedark_ls_colors)
 export TERMINAL=urxvt
+
+# Add color to man pages
+export MANPAGER="less -R --use-color -Dd+r -Du+b"
+export MANROFFOPT="-P -c"

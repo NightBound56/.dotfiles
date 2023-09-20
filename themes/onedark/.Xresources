@@ -32,8 +32,8 @@ URxvt.url-select.launcher: /usr/bin/firefox
 URxvt.iso14755: false
 URxvt.secondaryWheel: true
 
-URxvt.keysym.C-c:      perl:clipboard:copy
-URxvt.keysym.C-v:      perl:clipboard:paste
+URxvt.keysym.C-c: perl:clipboard:copy
+URxvt.keysym.C-v: perl:clipboard:paste
 
 ! Save a backup of the configuration to apply changes
 URxvt.saveLines: 10000
