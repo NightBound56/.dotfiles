@@ -35,21 +35,18 @@ log() {
 # Function to sanitize and validate arguments
 sanitize_argument() {
     local arg="$1"
-    
-    # Define a regular expression to allow alphanumeric characters, underscores,
-    # at symbols, periods, hyphens, slashes, parentheses, square brackets, spaces,
-    # tilde, question mark, ampersand, and dollar sign
-    escaped_string=$(echo "$arg" | sed 's/[][\.\\*^$]/\\&/g')
-    
-    local allowed_chars="^[A-Za-z0-9/\\|@\$~#._ ()\\/?\\[\\](&)]*$"
+
+    # Define a regular expression to allow alphanumeric characters, underscores, symbols, and some special characters
+    local allowed_chars="^[A-Za-z0-9_/\\|@\$~#.,_ ()\\-?&]*$"
 
     # Use grep with the -Eq (quiet) option to check if the argument contains only allowed characters
-    if echo "$escaped_string" | grep -Eq "$allowed_chars"; then
+    if echo "$arg" | grep -Eq "$allowed_chars"; then
         # Argument is safe; return it
         echo "$arg"
     else
         # Argument contains disallowed characters; handle the error
         echo "Error: Argument '$arg' contains invalid characters."
+        echo "Invalid characters found: $(echo "$arg" | grep -o -v "$allowed_chars")"
         exit 1
     fi
 }
