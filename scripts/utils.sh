@@ -15,10 +15,11 @@ shred_dir() {
     local directory="$1"
 	
 	
-    echo "Purging... '$directory'"
+    echo "Purging $directory"
+    echo "Progress %"
     if [ -d "$directory" ]; then
 	
-		total_files=$(find /path/to/your/directory -type f | wc -l)
+		total_files=$(find $directory -type f | wc -l)
 		files_deleted=0
         # Loop through each file and directory recursively purging with 40 passes.
         find "$directory" -type f | while read -r file; do
@@ -35,10 +36,10 @@ shred_dir() {
 
         # Purge shell
         if [ -n "$ZSH_VERSION" ]; then
-            cat /dev/null > "$XDG_HOME/.zsh_history"
+            cat /dev/null > "$HOME/.zsh_history"
             fc -R
         elif [ -n "$BASH_VERSION" ]; then
-            cat /dev/null > "$XDG_HOME/.bash_history"
+            cat /dev/null > "$HOME/.bash_history"
             history -c
             history -r
         fi
