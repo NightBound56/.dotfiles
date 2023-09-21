@@ -54,4 +54,4 @@ alias med="sh ~/scripts/listMedia.sh"
 alias upg="sudo pacman -Syyuu && yay -Syyuu"
 alias mediaserv="minidlnad -f /home/$USER/.config/minidlna.conf - P /home/$USER/.config/minidlna.pid -d"
 alias ls='lsd'
-alias shreddir="./$HOME/scripts/shred.sh shred_dir"
+alias shreddir="$HOME/scripts/./library.sh -f shred_dir -a "
