@@ -114,8 +114,6 @@ CheckArgs() {
     else
         log "Error: Function '$func_name' does not exist."
     fi
-
-	echo "Exit Check args..."
     # Log function end
     log "Function '$func_name' completed."
 }
