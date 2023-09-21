@@ -184,3 +184,23 @@ clean_dup_audio_files() {
         return 1
     fi
 }
+
+extract_season_episode() {
+    # Check for Rule 1 pattern: S999E999
+    if [[ $1 =~ [sS]([0-9]{2,3})[eE]([0-9]{2,3}) ]]; then
+        season="${BASH_REMATCH[1]}"
+        episode="${BASH_REMATCH[2]}"
+    # Check for Rule 2 pattern: 999x999
+    elif [[ $1 =~ ([0-9]{1,3})[xX]([0-9]{1,3}) ]]; then
+        season="${BASH_REMATCH[1]}"
+        episode="${BASH_REMATCH[2]}"
+    else
+        exit 1
+    fi
+
+    # Add leading zeros if season or episode is less than 10
+    season_formatted=$(printf "%02d" "$season")
+    episode_formatted=$(printf "%02d" "$episode")
+
+    echo "S${season_formatted}E${episode_formatted}"
+}
