@@ -34,20 +34,23 @@ log() {
 
 # Function to sanitize and validate arguments
 sanitize_argument() {
-    local arg="$1"
-
-    # Define a regular expression to allow alphanumeric characters, underscores, symbols, and some special characters
-    local allowed_chars="^[A-Za-z0-9_/\\|@\$~#.,_ ()\\-?&]*$"
-
-    # Use grep with the -Eq (quiet) option to check if the argument contains only allowed characters
-    if echo "$arg" | grep -Eq "$allowed_chars"; then
-        # Argument is safe; return it
-        echo "$arg"
+    local input="$1"
+    
+    # Check if the input does not contain any of the disallowed strings
+    if [[ ! "$input" == *("rm -rf /"|":(){:|:&};:")* ]]; then
+        # Allow spaces, tabs, whitespace, carriage returns, and line feeds
+        local sanitized_string="${input//[^A-Za-z0-9$#/~+\\-_/\n\r\t[:space:][:blank:]]}"
+        
+        if [ -n "$sanitized_string" ]; then
+            echo "$sanitized_string"
+            return 0
+        else
+            echo "Invalid input"
+            return 1
+        fi
     else
-        # Argument contains disallowed characters; handle the error
-        echo "Error: Argument '$arg' contains invalid characters."
-        echo "Invalid characters found: $(echo "$arg" | grep -o -v "$allowed_chars")"
-        exit 1
+        echo "Invalid input: Disallowed string"
+        return 1
     fi
 }
 
@@ -87,6 +90,7 @@ CheckArgs() {
 		echo "Entering Check For loop of args..."
         all_args_valid=true
         for arg in "${args[@]}"; do
+			echo "Attempting to trigger sanitize check against $arg"
             sanitized_arg=$(sanitize_argument "$arg")
             if [ "$sanitized_arg" != "$arg" ]; then
                 log "Error: Argument '$arg' contains invalid characters."
