@@ -13,13 +13,21 @@ delayed_shutdown() {
 shred_dir() {
     # Directory to purge
     local directory="$1"
+	
+	
     echo "Purging... '$directory'"
     if [ -d "$directory" ]; then
+	
+		total_files=$(find /path/to/your/directory -type f | wc -l)
+		files_deleted=0
         # Loop through each file and directory recursively purging with 40 passes.
         find "$directory" -type f | while read -r file; do
-            echo "Purging: '$file'"
+			
             shred -u -n 40 "$file"
-            echo "Purged"
+            ((files_deleted++))
+			
+			progress=$((files_deleted * 100 / total_files))
+			echo "$progress"
         done
 
         # Remove the parent directory that had all files purged
