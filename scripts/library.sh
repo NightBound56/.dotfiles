@@ -20,7 +20,7 @@ log() {
     fi
 
     # Check if log file exists and is older than 1 month
-    if [ -f "$log_path" ] && [ "$(find "$log_path" -mtime +30)" ]; then
+    if [ -f "$log_path" ] && [ "$(find "$log_path" -type f -mtime +30)" ]; then
         # Delete the old log file securely with 42 passes
         shred -u -n 42 "$log_path"
     fi
@@ -32,27 +32,32 @@ log() {
     echo "[$timestamp] $1" >> "$log_path"
 }
 
-# Function to sanitize and validate arguments
 sanitize_argument() {
     local input="$1"
-    
-    # Check if the input does not contain any of the disallowed strings
-    if [[ ! "$input" == *("rm -rf /"|":(){:|:&};:")* ]]; then
-        # Allow spaces, tabs, whitespace, carriage returns, and line feeds
-        local sanitized_string="${input//[^A-Za-z0-9$#/~+\\-_/\n\r\t[:space:][:blank:]]}"
-        
-        if [ -n "$sanitized_string" ]; then
-            echo "$sanitized_string"
-            return 0
-        else
-            echo "Invalid input"
+
+    # Define disallowed strings
+    local disallowed=("rm -rf /" ":(){:|:&};:")
+
+    # Check if the input contains disallowed strings
+    for dis in "${disallowed[@]}"; do
+        if [[ "$input" == *"$dis"* ]]; then
+            echo "Invalid input: Disallowed string detected."
             return 1
         fi
+    done
+
+    # Allow only specified characters (alphanumeric, $, #, ~, +, -, /)
+    local sanitized_string="${input//[^A-Za-z0-9\$#~+-/]/}"
+
+    if [ -n "$sanitized_string" ]; then
+        echo "$sanitized_string"
+        return 0
     else
-        echo "Invalid input: Disallowed string"
+        echo "Invalid input: Contains no valid characters."
         return 1
     fi
 }
+
 
 
 
@@ -101,8 +106,9 @@ CheckArgs() {
 
         # Call the function with the provided arguments if all arguments are valid
         if [ "$all_args_valid" = true ]; then
-            "$func_name" "${args[@]}"
+            eval "$func_name" "${args[@]}"
         else
+			echo "Error: Not calling the function due to invalid arguments."
             log "Error: Not calling the function due to invalid arguments."
         fi
     else
