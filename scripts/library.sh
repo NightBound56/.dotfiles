@@ -254,6 +254,7 @@ upper() {
 }
 
 
+
 # Media functions
 source ~/scripts/media.sh
 
@@ -264,7 +265,13 @@ source ~/scripts/utils.sh
 #source ~/scripts/archiving.sh
 
 
-
+# Naming convention
+# lower $1
+# extract_alphanumerics $1
+# replace_space_with_underscore $1
+# extract_season_episode $1
+# extract_info $1 "year"
+# extract_info $1 "quality"
 
 
 #END FUNCTION DEFINITION HERE
