@@ -47,3 +47,41 @@ shred_dir() {
         echo "Directory '$1' does not exist."
     fi
 }
+
+generate_ssh_keys() {
+    local key_name="$1"
+    local key_path="$HOME/keys/$key_name"
+
+    # Generate a secure Ed25519 SSH key
+    ssh-keygen -t ed25519 -f "$key_path" -N ""
+
+    # Ensure correct permissions for all files in the keys folder
+    chmod 600 "$HOME/keys"/*
+}
+
+import_ssh_keys() {
+    local keys_dir="$HOME/keys"
+    
+    # Check if the keys directory exists
+    if [ -d "$keys_dir" ]; then
+        for key_file in "$keys_dir"/*; do
+            # Check if it's a regular file and not a directory
+            if [ -f "$key_file" ]; then
+                # Check if the file is an SSH key (public or private)
+                if ssh-keygen -l -f "$key_file" &>/dev/null; then
+                    # Check if the key is already in the SSH agent
+                    if ! ssh-add -l | grep -q "$(ssh-keygen -E md5 -lf "$key_file" | awk '{print $2}')"; then
+                        ssh-add "$key_file"
+                        echo "Imported SSH key: $key_file"
+                    else
+                        echo "SSH key already imported: $key_file"
+                    fi
+                else
+                    echo "Not an SSH key: $key_file"
+                fi
+            fi
+        done
+    else
+        echo "Keys directory not found: $keys_dir"
+    fi
+}

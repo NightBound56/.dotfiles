@@ -1,17 +1,17 @@
 
 # color ls
-alias ls='ls --color=auto'
+alias ls='ls --color=auto '
 # color grep
-alias grep='grep --color=auto'
+alias grep='grep --color=auto '
 
 
 #Find file recursively
 alias f='find . |grep --color=auto '
 
 # Show hidden files
-alias l.='ls -d .* --color=auto'
+alias l.='ls -d .* --color=auto '
 # Diff color
-alias diff='diff --color=auto'
+alias diff='diff --color=auto '
 #Todays date
 alias nowdate='date +"%d-%m-%Y"'
 
@@ -20,7 +20,7 @@ alias reboot='sudo /sbin/reboot'
 alias poweroff='sudo /sbin/poweroff'
 alias halt='sudo /sbin/halt'
 alias shutdown='sudo /sbin/shutdown'
-
+alias shutdownt="$HOME/scripts/./library.sh -f delayed_shutdown -a "
 #File conversion ffmpeg
 
 #Media server
@@ -35,23 +35,16 @@ alias left='ls -t -1'
 alias count='find . -type f | wc -l'
 
 # use rsync to copy files as it shows progress
-alias cpv='rsync -ah --info=progress2'
-
-# Pac-Man cleanup and yay cleanup
+alias cpv='rsync -ah --info=progress2 '
 
 # CD to folders
 alias desk="cd ~/Desktop"
 alias down="cd ~/Downloads"
 
-#Clipboard management:
-alias xc='xclip -selection clipboard -i ' #To write to Clipboard
-alias clipboard='xclip -selection "clipboard" -o' #To read from Clipboard
-
 # open programs
 alias o='xdg-open'
 
-alias med="sh ~/scripts/listMedia.sh"
 alias upg="sudo pacman -Syyuu && yay -Syyuu"
-alias mediaserv="minidlnad -f /home/$USER/.config/minidlna.conf - P /home/$USER/.config/minidlna.pid -d"
+alias mediaserv="minidlnad -f /$HOME/.config/minidlna.conf - P /$HOME/.config/minidlna.pid -d"
 alias ls='lsd'
 alias shreddir="$HOME/scripts/./library.sh -f shred_dir -a "
