@@ -204,3 +204,29 @@ extract_season_episode() {
 
     echo "S${season_formatted}E${episode_formatted}"
 }
+
+# Define the function
+extract_info() {
+    filename="$1"
+    option="$2"
+
+    if [ "$option" = "quality" ]; then
+        # Extract quality using regex (search anywhere in the filename)
+        if [[ "$filename" =~ \[([0-9]{3,4}[A-Za-z])\]|\(([0-9]{3,4}[A-Za-z])\) ]]; then
+            quality="${BASH_REMATCH[1]}"
+            echo "$quality"
+        else
+            exit 1
+        fi
+    elif [ "$option" = "year" ]; then
+        # Extract year using regex (search anywhere in the filename)
+        if [[ "$filename" =~ \[(19[0-9][0-9]|20[0-9][0-9])\]|\((19[0-9][0-9]|20[0-9][0-9])\) ]]; then
+            year="${BASH_REMATCH[1]}"
+            echo "$year"
+        else
+            exit 1
+        fi
+    else
+        exit 1
+    fi
+}
