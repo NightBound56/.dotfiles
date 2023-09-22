@@ -230,13 +230,14 @@ extract_alphanumerics() {
 
 replace_space_with_underscore() {
   local input="$1"
+  # Replace periods with spaces
+  local replaced="${input//./ }"
   # Replace spaces with underscores
-  local replaced="${input// /_}"
+  replaced="${replaced// /_}"
   # Use sed to replace consecutive underscores with a single underscore
   replaced=$(echo "$replaced" | sed 's/__*/_/g')
   echo "$replaced"
 }
-# Example usage: result1=$(replace_spaces_with_underscore "$string1")
 
 lower() {
   local input="$1"
