@@ -221,12 +221,15 @@ trim() {
 
 extract_alphanumerics() {
   local input="$1"
-  local result
-  result=$(echo "$input" | tr -cd '[:alnum:] ')
-  echo "$result"
+  local pattern="[a-zA-Z0-9. ]+"
+  
+  if [[ "$input" =~ $pattern ]]; then
+    local result="${BASH_REMATCH[0]}"
+    echo "$result"
+  else
+    echo "No alphanumeric or period characters found."
+  fi
 }
-# Example usage: result=$(extract_alphanumerics "$my_string")
-
 
 replace_space_with_underscore() {
   local input="$1"
@@ -265,7 +268,7 @@ source ~/scripts/utils.sh
 #source ~/scripts/archiving.sh
 
 
-# Naming convention
+# Naming convention SeasonEpisode_title_year_quality
 # lower $1
 # extract_alphanumerics $1
 # replace_space_with_underscore $1
