@@ -275,6 +275,10 @@ source ~/scripts/utils.sh
 # extract_season_episode $1
 # extract_info $1 "year"
 # extract_info $1 "quality"
+# extension="${filename##*.}"
+# rename file
+
+
 
 
 #END FUNCTION DEFINITION HERE
