@@ -21,32 +21,34 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 <color_scheme name="OneDark" format="2.1">
     <window type="key-popup">
-        <color element="border" rgb="#61afef" opacity="1.0"/> <!-- Bright Blue -->
+        <color element="border" rgb="#282c34" opacity="1.0"/> <!-- Bright Blue -->
     </window>
 
     <layer> <color element="background" rgb="#282c34" opacity="1.0"/> </layer> <!-- Darkest Background -->
-    <layer> <color element="background" rgb="#2e3440" opacity="0.9"/> </layer> <!-- Slightly lighter background -->
-    <layer> <color element="background" rgb="#2e3440" opacity="0.9"/> </layer> <!-- Slightly lighter background -->
+    <layer> <color element="background" rgb="#282c34" opacity="0.9"/> </layer> <!-- Slightly lighter background -->
+    <layer> <color element="background" rgb="#282c34" opacity="0.9"/> </layer> <!-- Slightly lighter background -->
 
     <key_group>
-        <color element="fill"   rgb="#61afef"/> <!-- Bright Blue -->
+        <color element="fill"   rgb="#282c34"/> <!-- Bright Blue -->
         <color element="stroke" rgb="#282c34"/> <!-- Darkest Background -->
         <color element="label"  rgb="#abb2bf"/> <!-- Light Gray -->
         icon0
         
         <key_group>
-            <color element="fill" rgb="#61afef"/> <!-- Bright Blue -->
+            <color element="fill" rgb="#282c34"/> <!-- Bright Blue -->
             icon1, icon2
         </key_group>
         
         <key_group>
-            <color element="fill" rgb="#61afef"/> <!-- Bright Blue -->
+            <color element="fill" rgb="#98C379"/> <!-- Bright Blue -->
+            <color element="stroke" rgb="#282c34"/>
+            <color element="label" rgb="#282c34"/>
             RCTL, LCTL, RALT, LALT, LWIN, CAPS, 
             LFSH, RTSH, NMLK, ESC
         </key_group>
         
         <key_group>
-            <color element="fill" rgb="#61afef"/> <!-- Bright Blue -->
+            <color element="fill" rgb="#282c34"/> <!-- Bright Blue -->
             MENU, RWIN, BKSP, TAB, RTRN, 
             KPDL, KPEN,
             LEFT, RGHT, UP, DOWN, INS, DELE, HOME, END, PGUP, PGDN,
@@ -59,18 +61,20 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         </key_group>
         
         <key_group>
-            <color element="fill" rgb="#61afef"/> <!-- Bright Blue -->
+            <color element="fill" rgb="#282c34"/> <!-- Bright Blue -->
             m0, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15
         </key_group>
         
         <key_group>
             <color element="fill" rgb="#e06c75"/> <!-- Red -->
+            <color element="label" rgb="#282c34"/>
             settings
         </key_group>
 
 	<!-- word suggestions -->
 	<key_group>
             <color element="fill" rgb="#abb2bf"/> <!-- Light Gray -->
+
 	    wordlist, prediction
 	</key_group>
     </key_group>
