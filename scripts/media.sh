@@ -62,7 +62,7 @@ join_mp3() {
     fi
 }
 
-convert_m4b_to_m4a_() {
+convert_m4b_to_m4a() {
     input_file="$1"
     output_file="$(dirname "$input_file")/$(basename "$input_file" .m4b).m4a"
     

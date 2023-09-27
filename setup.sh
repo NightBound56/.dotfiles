@@ -155,7 +155,6 @@ ln -s "$dotfiles_dir/fonts" ~/fonts
 ln -s "$dotfiles_dir/.zshrc" ~/.zshrc # zsh/oh-my-zsh/powerline10k config file
 ln -s "$dotfiles_dir/.bashrc" ~/.bashrc # basic bash shell if i need to revert from zsh
 ln -s "$dotfiles_dir/.bash_aliases" ~/.bash_aliases #used for both bash and zsh for short hand commands
-ln -s "$dotfiles_dir/.p10k.zsh" ~/.p10k.zsh
 ln -s "$dotfiles_dir/.tmux.conf" ~/.tmux.conf #terminal multiplexer - mostly specifies keybindings for terminal management, split screens etc.
 ln -s "$dotfiles_dir/file_templates" ~/file_templates #using neovim as an editor the are default template files used each time I scaffold a file.
 ln -s "$dotfiles_dir/themes/onedark" ~/themes/onedark #a lot of config files reference files in this folder that use the one dark color theme. May be able to make a theme switcher in future
@@ -218,6 +217,3 @@ directory="$HOME/fonts"; if [ ! -d "$directory" ]; then echo "Error: Directory n
 # Update terminal
 xrdb -merge ~/.Xresources
 
-#Clone Powerlevel 10k dont need bottom line as its already in .zshrc only need this line as it has the depth flag.
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
-# echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
