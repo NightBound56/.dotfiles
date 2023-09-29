@@ -1,13 +1,12 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
 
 export ZSH="$HOME/.oh-my-zsh"
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-
 # Set your ZSH_THEME after sourcing the Powerlevel10k theme.
-ZSH_THEME="agnoster"
+ZSH_THEME="robbyrussell"
+
+
+zstyle ':omz:update' mode auto      # update automatically without asking
+zstyle ':omz:update' frequency 31
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
@@ -16,16 +15,13 @@ else
   export EDITOR='nvim'
 fi
 
+
+# Always set python environment to be production by default, that way python wont conflict with package managers.
 if [[ -z "$VIRTUAL_ENV" ]]; then
     source "$HOME/venvs/prod/bin/activate"
 fi
 
-# Move any commands that perform console I/O after the instant prompt preamble
-# to a later part of the file to avoid conflicts with instant prompt.
-
-# The following lines perform console I/O and should be moved down
-# to a later part of the file:
-
+# Change to different python environments depending on folder.
 function cd() {
     # Store the current theme.
     local current_theme="$ZSH_THEME"
@@ -55,14 +51,33 @@ function cd() {
     ZSH_THEME="$current_theme"
 }
 
+#If a bash alias file is present then use it.
 if [ -e $HOME/.bash_aliases ]; then
     source $HOME/.bash_aliases
 fi
 
-eval $(dircolors $HOME/themes/onedark/onedark_ls_colors)
+
+# Default terminal
 export TERMINAL=urxvt
 
-# Add color to man pages
+plugins=(
+  git
+  zsh-syntax-highlighting
+  zsh-autosuggestions
+  zsh-completions
+  command-not-found
+  emoji
+  tmux
+  ufw
+)
+
+# Set lang
+export LANG=en_GB.UTF-8
+
+# Add color theme
 export MANPAGER="less -R --use-color -Dd+r -Du+b"
 export MANROFFOPT="-P -c"
+eval $(dircolors $HOME/themes/onedark/onedark_ls_colors)
 
+# Add ZSH source again, if so why?
+source $ZSH/oh-my-zsh.sh
