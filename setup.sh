@@ -61,28 +61,7 @@ create_custom_venv() {
 
 
 
-copy_env_file() {
-    # Check if both parameters are provided
-    if [ $# -ne 2 ]; then
-        echo "Usage: copy_env_file <environment> <destination_directory>"
-        return 1
-    fi
 
-    local environment="$1"
-    local destination_directory="$2"
-    
-    # Construct the source path based on the environment
-    local source_file="$HOME/venvs/${environment}.env"
-
-    # Check if the source file exists
-    if [ -f "$source_file" ]; then
-        # Copy the source file to the destination directory and rename it to ".env"
-        cp "$source_file" "$destination_directory/.env"
-        echo "Copied ${environment}.env to $destination_directory as .env"
-    else
-        echo "Error: ${environment}.env not found in $HOME/venvs."
-    fi
-}
 
 create_symbolic_link() {
   source_path=$(readlink -f "$1")
@@ -133,30 +112,60 @@ create_custom_venv test
 create_custom_venv prod
 # The template .env files can be copied to the relevant directories. This allows the ZSH plugin autoenv to change environments when CD'ing into the directory.
 
-copy_env_file prod $HOME
-
 #install required packages for ricing both from arch repos and AUR
-sudo pacman -qS grep sed onboard git zsh jq wget tmux mdcat neovim picom i3-wm rofi curl kitty xsel zathura zathura-cb feh neofetch zathura-pdf-mupdf --noconfirm
-yay -S betterlockscreen cava ruby-colorls  --noconfirm --quiet
+sudo pacman -qS \
+  grep \
+  sed \
+  onboard \
+  git \
+  zsh \
+  jq \
+  wget \
+  tmux \
+  mdcat \
+  neovim \
+  picom \
+  i3-wm \
+  rofi \
+  curl \
+  kitty \
+  xsel \
+  zathura \
+  zathura-cb \
+  feh \
+  neofetch \
+  zathura-pdf-mupdf \
+  --noconfirm
 
-#Create symbolic links
-create_symbolic_link "$dotfiles_dir/i3/config" ~/.config/i3/config #tiling window manager multiple virtual desktops with apps opening on them by default.
-create_symbolic_link "$dotfiles_dir/cava/cava.conf" ~/.config/cava/cava.conf #terminal audio visualisation, needs more work.
+yay -S \
+  betterlockscreen \
+  cava \
+  ruby-colorls \
+  --noconfirm \
+  --quiet
+
+#Create symbolic links for directories
+create_symbolic_link "$dotfiles_dir/i3" ~/.config/i3 #tiling window manager multiple virtual desktops with apps opening on them by default.
+create_symbolic_link "$dotfiles_dir/cava" ~/.config/cava #terminal audio visualisation, needs more work.
 create_symbolic_link "$dotfiles_dir/dmenu" ~/.config/dmenu #terminal based launcher for apps
+create_symbolic_link "$dotfiles_dir/scripts" ~/scripts #script library
+create_symbolic_link "$dotfiles_dir/fonts" ~/fonts
+create_symbolic_link "$dotfiles_dir/file_templates" ~/file_templates #using neovim as an editor the are default template files used each time I scaffold a file.
+create_symbolic_link "$dotfiles_dir/themes" ~/themes
+
+
+#Create symbolic links for files
 create_symbolic_link "$dotfiles_dir/rofi/config" ~/.config/rofi/config #alternative to dmenu
 create_symbolic_link "$dotfiles_dir/polybar/config" ~/.config/polybar/config #tiny menubar showing system stats and results of scripts.
 create_symbolic_link "$dotfiles_dir/nvim/init.vim" ~/.config/nvim/init.vim #neonim config
 create_symbolic_link "$dotfiles_dir/picom/picom.conf" ~/.config/picom/picom.conf #display manager for i3
 create_symbolic_link "$dotfiles_dir/mpv/mpv.conf" ~/.config/mpv/mpv.conf #movie player
-create_symbolic_link "$dotfiles_dir/scripts" ~/scripts #script library
-create_symbolic_link "$dotfiles_dir/fonts" ~/fonts
 create_symbolic_link "$dotfiles_dir/.zshrc" ~/.zshrc # zsh/oh-my-zsh/powerline10k config file
 create_symbolic_link "$dotfiles_dir/.bashrc" ~/.bashrc # basic bash shell if i need to revert from zsh
 create_symbolic_link "$dotfiles_dir/.bash_aliases" ~/.bash_aliases #used for both bash and zsh for short hand commands
 create_symbolic_link "$dotfiles_dir/.tmux.conf" ~/.tmux.conf #terminal multiplexer - mostly specifies keybindings for terminal management, split screens etc.
-create_symbolic_link "$dotfiles_dir/file_templates" ~/file_templates #using neovim as an editor the are default template files used each time I scaffold a file.
 create_symbolic_link "$dotfiles_dir/kitty/kitty.conf" ~/.config/kitty/kitty.conf
-create_symbolic_link "$dotfiles_dir/themes/onedark/kitty/onedark.conf" ~/themes/onedark/kitty/kitty.conf
+
 
 # Make workflow folders if they dont already exist. These dont point to config files in the git repo.
 mkdir -p $HOME/documentation/best_practice
