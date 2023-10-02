@@ -84,30 +84,43 @@ copy_env_file() {
     fi
 }
 
-
-
-
-prep_directories() {
-    local dir_path="$1"
-    
-    if [ -L "$dir_path" ]; then
-        # If it's a symbolic link, remove it.
-        echo "Removing symbolic link: $dir_path"
-        rm "$dir_path"
-    elif [ ! -d "$dir_path" ]; then
-        # If it doesn't exist, create the directory.
-        echo "Creating directory: $dir_path"
-        mkdir -p "$dir_path"
-    fi
-}
-
-# Function to create a symbolic link with the -s argument.
 create_symbolic_link() {
-    local target="$1"
-    local destination="$2"
-    
-    ln -s "$target" "$destination"
+  source_path=$(readlink -f "$1")
+  dest_path=$(readlink -f "$2")
+
+  # Check if source exists
+  if [ ! -e "$source_path" ]; then
+    echo "Error: Source '$1' does not exist."
+    return 1
+  fi
+
+  # Check if source is a symbolic link and remove it
+  if [ -L "$source_path" ]; then
+    rm "$source_path"
+    echo "Removed existing symbolic link: $source_path"
+  fi
+
+  # Extract directory path from destination and create if not exists
+  dest_dir=$(dirname "$dest_path")
+  mkdir -p "$dest_dir"
+
+  # Check if source and destination are the same
+  if [ "$source_path" == "$dest_path" ]; then
+    echo "Error: Source and destination are the same. Symbolic link not created."
+    return 1
+  fi
+
+  # Check for indirect self-referencing through symbolic links
+  if [[ -n $(find "$dest_path" -type l -samefile "$source_path") ]]; then
+    echo "Error: Symbolic link creates an indirect self-reference. Not created."
+    return 1
+  fi
+
+  # Create symbolic link
+  ln -s "$source_path" "$dest_path"
+  echo "Symbolic link created: $source_path -> $dest_path"
 }
+
 
 
 dotfiles_dir="$HOME/.dotfiles"
@@ -126,41 +139,24 @@ copy_env_file prod $HOME
 sudo pacman -qS grep sed onboard git zsh jq wget tmux mdcat neovim picom i3-wm rofi curl kitty xsel zathura zathura-cb feh neofetch zathura-pdf-mupdf --noconfirm
 yay -S betterlockscreen cava ruby-colorls  --noconfirm --quiet
 
-
-# create directories for symbolic links (if they dont already exist), if there is already a symbolic link then remove it.
-prep_directories "$HOME/.config/i3"
-prep_directories "$HOME/.config/cava"
-prep_directories "$HOME/.config/dmenu"
-prep_directories "$HOME/.config/rofi"
-prep_directories "$HOME/.config/polybar"
-prep_directories "$HOME/.config/nvim"
-prep_directories "$HOME/.config/picom"
-prep_directories "$HOME/.config/mpv"
-prep_directories "$HOME/scripts"
-prep_directories "$HOME/fonts"
-prep_directories "$HOME/themes"
-
 #Create symbolic links
-ln -s "$dotfiles_dir/i3/config" ~/.config/i3/config #tiling window manager multiple virtual desktops with apps opening on them by default.
-ln -s "$dotfiles_dir/cava/cava.conf" ~/.config/cava/cava.conf #terminal audio visualisation, needs more work.
-ln -s "$dotfiles_dir/dmenu" ~/.config/dmenu #terminal based launcher for apps
-ln -s "$dotfiles_dir/rofi/config" ~/.config/rofi/config #alternative to dmenu
-ln -s "$dotfiles_dir/polybar/config" ~/.config/polybar/config #tiny menubar showing system stats and results of scripts.
-ln -s "$dotfiles_dir/nvim/init.vim" ~/.config/nvim/init.vim #neonim config
-ln -s "$dotfiles_dir/picom/picom.conf" ~/.config/picom/picom.conf #display manager for i3
-ln -s "$dotfiles_dir/mpv/mpv.conf" ~/.config/mpv/mpv.conf #movie player
-ln -s "$dotfiles_dir/scripts" ~/scripts #script library
-ln -s "$dotfiles_dir/fonts" ~/fonts
-ln -s "$dotfiles_dir/.zshrc" ~/.zshrc # zsh/oh-my-zsh/powerline10k config file
-ln -s "$dotfiles_dir/.bashrc" ~/.bashrc # basic bash shell if i need to revert from zsh
-ln -s "$dotfiles_dir/.bash_aliases" ~/.bash_aliases #used for both bash and zsh for short hand commands
-ln -s "$dotfiles_dir/.tmux.conf" ~/.tmux.conf #terminal multiplexer - mostly specifies keybindings for terminal management, split screens etc.
-ln -s "$dotfiles_dir/file_templates" ~/file_templates #using neovim as an editor the are default template files used each time I scaffold a file.
-ln -s "$dotfiles_dir/kitty/kitty.conf" ~/.config/kitty/kitty.conf
-ln -s "$dotfiles_dir/themes/onedark/kitty/onedark.conf" ~/themes/onedark/kitty/kitty.conf
-
-
-echo "Symbolic links created!"
+create_symbolic_link "$dotfiles_dir/i3/config" ~/.config/i3/config #tiling window manager multiple virtual desktops with apps opening on them by default.
+create_symbolic_link "$dotfiles_dir/cava/cava.conf" ~/.config/cava/cava.conf #terminal audio visualisation, needs more work.
+create_symbolic_link "$dotfiles_dir/dmenu" ~/.config/dmenu #terminal based launcher for apps
+create_symbolic_link "$dotfiles_dir/rofi/config" ~/.config/rofi/config #alternative to dmenu
+create_symbolic_link "$dotfiles_dir/polybar/config" ~/.config/polybar/config #tiny menubar showing system stats and results of scripts.
+create_symbolic_link "$dotfiles_dir/nvim/init.vim" ~/.config/nvim/init.vim #neonim config
+create_symbolic_link "$dotfiles_dir/picom/picom.conf" ~/.config/picom/picom.conf #display manager for i3
+create_symbolic_link "$dotfiles_dir/mpv/mpv.conf" ~/.config/mpv/mpv.conf #movie player
+create_symbolic_link "$dotfiles_dir/scripts" ~/scripts #script library
+create_symbolic_link "$dotfiles_dir/fonts" ~/fonts
+create_symbolic_link "$dotfiles_dir/.zshrc" ~/.zshrc # zsh/oh-my-zsh/powerline10k config file
+create_symbolic_link "$dotfiles_dir/.bashrc" ~/.bashrc # basic bash shell if i need to revert from zsh
+create_symbolic_link "$dotfiles_dir/.bash_aliases" ~/.bash_aliases #used for both bash and zsh for short hand commands
+create_symbolic_link "$dotfiles_dir/.tmux.conf" ~/.tmux.conf #terminal multiplexer - mostly specifies keybindings for terminal management, split screens etc.
+create_symbolic_link "$dotfiles_dir/file_templates" ~/file_templates #using neovim as an editor the are default template files used each time I scaffold a file.
+create_symbolic_link "$dotfiles_dir/kitty/kitty.conf" ~/.config/kitty/kitty.conf
+create_symbolic_link "$dotfiles_dir/themes/onedark/kitty/onedark.conf" ~/themes/onedark/kitty/kitty.conf
 
 # Make workflow folders if they dont already exist. These dont point to config files in the git repo.
 mkdir -p $HOME/documentation/best_practice
@@ -189,8 +185,6 @@ mkdir -p $HOME/software_dev/prod
 mkdir -p $HOME/software_dev/test
 mkdir -p $HOME/software_dev/dev
 
-
-
 # grab repo's and scripts from third parties
 clone_git_repo "https://github.com/tmux-plugins/tpm" "~/.tmux/plugins/tpm"
 
@@ -199,7 +193,6 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 clone_git_repo "https://github.com/zsh-users/zsh-syntax-highlighting" "~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
 clone_git_repo "https://github.com/zsh-users/zsh-autosuggestions" "~/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
 clone_git_repo "https://github.com/zsh-users/zsh-completions" "~/.oh-my-zsh/custom/plugins/zsh-completions"
-# Clone in wallpapers for onedark theme
 clone_git_repo "https://github.com/Narmis-E/onedark-wallpapers" "~/wallpapers"
 
 # nvim plugin manager
@@ -212,9 +205,3 @@ find $HOME/scripts -type f -name "*.sh" -exec chmod +x {} \;
 
 # install fonts
 directory="$HOME/fonts"; if [ ! -d "$directory" ]; then echo "Error: Directory not found."; exit 1; fi; echo "Installing fonts from $directory..."; mkdir -p "$HOME/.fonts"; find "$directory" -type f \( -name "*.otf" -o -name "*.ttf" \) -print0 | while IFS= read -r -d '' fontfile; do fontname=$(basename "$fontfile"); if fc-list | grep -q "$fontname"; then echo "Font $fontname is already installed."; else cp "$fontfile" "$HOME/.fonts/"; echo "Installed font: $fontname"; fi; done; echo "Updating font cache..."; fc-cache -f -v; echo "Font installation complete."
-
-# this avoids tracking username details in the Xresources file during commit. Aim was to create a symbolic link to a theme based file, but urxvt had issues with env vars.
-
-# Update terminal
-xrdb -merge ~/.Xresources
-
