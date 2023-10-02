@@ -36,7 +36,7 @@ fi
 
 
 # Default terminal
-export TERMINAL=urxvt
+export TERMINAL=kitty
 
 plugins=(
   git
