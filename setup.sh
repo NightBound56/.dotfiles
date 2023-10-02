@@ -262,7 +262,7 @@ install_fonts() {
   done
 
   echo "Updating font cache..."
-  fc-cache -f -v
+  fc-cache -f -v > /dev/null 2>&1
   echo "Font installation complete."
 }
 
