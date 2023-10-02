@@ -123,8 +123,8 @@ create_custom_venv prod
 copy_env_file prod $HOME
 
 #install required packages for ricing both from arch repos and AUR
-sudo pacman -qS grep sed onboard git zsh jq wget tmux mdcat neovim picom i3-wm rofi curl rxvt-unicode urxvt-perls xsel lsd zathura zathura-cb feh neofetch zathura-pdf-mupdf --noconfirm
-yay -S betterlockscreen cava --noconfirm --quiet
+sudo pacman -qS grep sed onboard git zsh jq wget tmux mdcat neovim picom i3-wm rofi curl kitty xsel zathura zathura-cb feh neofetch zathura-pdf-mupdf --noconfirm
+yay -S betterlockscreen cava ruby-colorls  --noconfirm --quiet
 
 
 # create directories for symbolic links (if they dont already exist), if there is already a symbolic link then remove it.
@@ -141,7 +141,6 @@ prep_directories "$HOME/fonts"
 prep_directories "$HOME/themes"
 
 #Create symbolic links
-ln -s "$dotfiles_dir/themes/onedark/.Xresources" ~/.Xresources
 ln -s "$dotfiles_dir/i3/config" ~/.config/i3/config #tiling window manager multiple virtual desktops with apps opening on them by default.
 ln -s "$dotfiles_dir/cava/cava.conf" ~/.config/cava/cava.conf #terminal audio visualisation, needs more work.
 ln -s "$dotfiles_dir/dmenu" ~/.config/dmenu #terminal based launcher for apps
@@ -157,7 +156,10 @@ ln -s "$dotfiles_dir/.bashrc" ~/.bashrc # basic bash shell if i need to revert f
 ln -s "$dotfiles_dir/.bash_aliases" ~/.bash_aliases #used for both bash and zsh for short hand commands
 ln -s "$dotfiles_dir/.tmux.conf" ~/.tmux.conf #terminal multiplexer - mostly specifies keybindings for terminal management, split screens etc.
 ln -s "$dotfiles_dir/file_templates" ~/file_templates #using neovim as an editor the are default template files used each time I scaffold a file.
-ln -s "$dotfiles_dir/themes/onedark" ~/themes/onedark #a lot of config files reference files in this folder that use the one dark color theme. May be able to make a theme switcher in future
+ln -s "$dotfiles_dir/kitty/kitty.conf" ~/.config/kitty/kitty.conf
+ln -s "$dotfiles_dir/themes/onedark/kitty/onedark.conf" ~/themes/onedark/kitty/kitty.conf
+
+
 echo "Symbolic links created!"
 
 # Make workflow folders if they dont already exist. These dont point to config files in the git repo.
@@ -194,7 +196,6 @@ clone_git_repo "https://github.com/tmux-plugins/tpm" "~/.tmux/plugins/tpm"
 
 # ZSH plugins
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-clone_git_repo "https://github.com/zpm-zsh/autoenv" "~/.oh-my-zsh/custom/plugins/autoenv"
 clone_git_repo "https://github.com/zsh-users/zsh-syntax-highlighting" "~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
 clone_git_repo "https://github.com/zsh-users/zsh-autosuggestions" "~/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
 clone_git_repo "https://github.com/zsh-users/zsh-completions" "~/.oh-my-zsh/custom/plugins/zsh-completions"

@@ -48,3 +48,6 @@ alias upg="sudo pacman -Syyuu && yay -Syyuu"
 alias mediaserv="minidlnad -f /$HOME/.config/minidlna.conf - P /$HOME/.config/minidlna.pid -d"
 alias ls='lsd'
 alias shreddir="$HOME/scripts/./library.sh -f shred_dir -a "
+alias pvprod="source \"$HOME/venvs/prod/bin/activate\""
+alias pvdev="source \"$HOME/venvs/dev/bin/activate\""
+alias pvtest="source \"$HOME/venvs/test/bin/activate\""
