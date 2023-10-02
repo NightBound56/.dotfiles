@@ -86,12 +86,14 @@ create_symbolic_link() {
 
   # Check if source and destination are the same
   if [ "$source_path" == "$dest_path" ]; then
+    echo "$source_path"
     echo "Error: Source and destination are the same. Symbolic link not created."
     return 1
   fi
 
   # Check for indirect self-referencing through symbolic links
   if [[ -n $(find "$dest_path" -type l -samefile "$source_path") ]]; then
+    echo "$source_path"
     echo "Error: Symbolic link creates an indirect self-reference. Not created."
     return 1
   fi
@@ -121,16 +123,18 @@ install_package() {
   echo "Processing $package_name."
   # Check if the package is already installed
   if "$package_manager" -Qq "$package_name" &>/dev/null; then
-    echo "$package_name is already installed."
+    echo "$package_name ................is already installed."
 	echo ""
   else
     # Install the package without sudo for yay
     if [ "$package_manager" = "yay" ]; then
+	  "Installing ................ $package_name"
       "$package_manager" -S --noconfirm "$package_name"
 	  echo ""
     elif [ "$package_manager" = "pacman" ]; then
       # For pacman, use sudo
-      sudo "$package_manager" -S --noconfirm "$package_name"
+      "Installing ................ $package_name"
+	  sudo "$package_manager" -S --noconfirm "$package_name"
 	  echo ""
     else
       echo "Unsupported package manager: $package_manager"
