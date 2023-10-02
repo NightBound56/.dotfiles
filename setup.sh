@@ -175,7 +175,6 @@ create_symbolic_link "$dotfiles_dir/i3" ~/.config/i3 #tiling window manager mult
 create_symbolic_link "$dotfiles_dir/cava" ~/.config/cava #terminal audio visualisation, needs more work.
 create_symbolic_link "$dotfiles_dir/dmenu" ~/.config/dmenu #terminal based launcher for apps
 create_symbolic_link "$dotfiles_dir/scripts" ~/scripts #script library
-create_symbolic_link "$dotfiles_dir/fonts" ~/fonts
 create_symbolic_link "$dotfiles_dir/file_templates" ~/file_templates #using neovim as an editor the are default template files used each time I scaffold a file.
 create_symbolic_link "$dotfiles_dir/themes" ~/themes
 
@@ -238,4 +237,34 @@ find $HOME/scripts -type f -name "*.sh" -exec chmod +x {} \;
 
 
 # install fonts
-directory="$HOME/fonts"; if [ ! -d "$directory" ]; then echo "Error: Directory not found."; exit 1; fi; echo "Installing fonts from $directory..."; mkdir -p "$HOME/.fonts"; find "$directory" -type f \( -name "*.otf" -o -name "*.ttf" \) -print0 | while IFS= read -r -d '' fontfile; do fontname=$(basename "$fontfile"); if fc-list | grep -q "$fontname"; then echo "Font $fontname is already installed."; else cp "$fontfile" "$HOME/.fonts/"; echo "Installed font: $fontname"; fi; done; echo "Updating font cache..."; fc-cache -f -v; echo "Font installation complete."
+install_fonts() {
+  local directory="$1"
+
+  # Check if the directory exists
+  if [ ! -d "$directory" ]; then
+    echo "Error: Directory not found."
+    exit 1
+  fi
+
+  echo "Installing fonts from $directory..."
+  mkdir -p "$HOME/.fonts"
+
+  find "$directory" -type f \( -name "*.otf" -o -name "*.ttf" \) -print0 | while IFS= read -r -d '' fontfile; do
+    fontname=$(basename "$fontfile")
+
+    # Check if the font is already installed
+    if fc-list | grep -q "$fontname"; then
+      echo "Font $fontname is already installed."
+    else
+      cp "$fontfile" "$HOME/.fonts/"
+      echo "Installed font: $fontname"
+    fi
+  done
+
+  echo "Updating font cache..."
+  fc-cache -f -v
+  echo "Font installation complete."
+}
+
+# Example usage:
+install_fonts "$dotfiles_dir/fonts"
