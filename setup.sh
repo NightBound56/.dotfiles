@@ -10,14 +10,15 @@ clone_git_repo() {
     local repo_url="$1"
     local destination="$2"
 
-    # Check if both parameters are provided
-    if [ -z "$repo_url" ] || [ -z "$destination" ]; then
-        echo "Incorrect number of parameters provided"
-        return
-    fi
-
     # Check if destination contains environment variables and expand them
     destination=$(eval echo "$destination")
+
+    # Extract the repository name from the URL
+    local repo_name
+    repo_name=$(basename "$repo_url" .git)
+
+    # Echo the repository name
+    echo "Repository name: $repo_name"
 
     # Check if the destination directory exists
     if [ -d "$destination" ]; then
@@ -112,37 +113,62 @@ create_custom_venv test
 create_custom_venv prod
 # The template .env files can be copied to the relevant directories. This allows the ZSH plugin autoenv to change environments when CD'ing into the directory.
 
-#install required packages for ricing both from arch repos and AUR
-sudo pacman -qS \
-  grep \
-  sed \
-  onboard \
-  git \
-  zsh \
-  jq \
-  wget \
-  tmux \
-  mdcat \
-  neovim \
-  picom \
-  i3-wm \
-  rofi \
-  curl \
-  kitty \
-  xsel \
-  zathura \
-  zathura-cb \
-  feh \
-  neofetch \
-  zathura-pdf-mupdf \
-  --noconfirm
 
-yay -S \
-  betterlockscreen \
-  cava \
-  ruby-colorls \
-  --noconfirm \
-  --quiet
+install_package() {
+  local package_name="$1"
+  local package_manager="$2"
+
+  echo "Processing $package_name."
+  # Check if the package is already installed
+  if "$package_manager" -Qq "$package_name" &>/dev/null; then
+    echo "$package_name is already installed."
+	echo ""
+  else
+    # Install the package without sudo for yay
+    if [ "$package_manager" = "yay" ]; then
+      "$package_manager" -S --noconfirm "$package_name"
+	  echo ""
+    elif [ "$package_manager" = "pacman" ]; then
+      # For pacman, use sudo
+      sudo "$package_manager" -S --noconfirm "$package_name"
+	  echo ""
+    else
+      echo "Unsupported package manager: $package_manager"
+	  echo ""
+      return 1
+    fi
+    
+  fi
+}
+
+
+#install required packages for ricing both from arch repos and AUR
+install_package "grep" "pacman"
+install_package "sed" "pacman"
+install_package "onboard" "pacman"
+install_package "git" "pacman"
+install_package "zsh" "pacman"
+install_package "jq" "pacman"
+install_package "wget" "pacman"
+install_package "tmux" "pacman"
+install_package "mdcat" "pacman"
+install_package "neovim" "pacman"
+install_package "picom" "pacman"
+install_package "i3-wm" "pacman"
+install_package "rofi" "pacman"
+install_package "curl" "pacman"
+install_package "kitty" "pacman"
+install_package "xsel" "pacman"
+install_package "zathura" "pacman"
+install_package "zathura-cb" "pacman"
+install_package "zathura-pdf-mupdf" "pacman"
+install_package "feh" "pacman"
+install_package "neofetch" "pacman"
+
+install_package "betterlockscreen" "yay"
+install_package "cava" "yay"
+install_package "ruby-colorls" "yay" 
+
 
 #Create symbolic links for directories
 create_symbolic_link "$dotfiles_dir/i3" ~/.config/i3 #tiling window manager multiple virtual desktops with apps opening on them by default.
@@ -156,16 +182,15 @@ create_symbolic_link "$dotfiles_dir/themes" ~/themes
 
 #Create symbolic links for files
 create_symbolic_link "$dotfiles_dir/rofi/config" ~/.config/rofi/config #alternative to dmenu
-create_symbolic_link "$dotfiles_dir/polybar/config" ~/.config/polybar/config #tiny menubar showing system stats and results of scripts.
+#create_symbolic_link "$dotfiles_dir/polybar/config" ~/.config/polybar/config #tiny menubar showing system stats and results of scripts.
 create_symbolic_link "$dotfiles_dir/nvim/init.vim" ~/.config/nvim/init.vim #neonim config
 create_symbolic_link "$dotfiles_dir/picom/picom.conf" ~/.config/picom/picom.conf #display manager for i3
-create_symbolic_link "$dotfiles_dir/mpv/mpv.conf" ~/.config/mpv/mpv.conf #movie player
+#create_symbolic_link "$dotfiles_dir/mpv/mpv.conf" ~/.config/mpv/mpv.conf #movie player
 create_symbolic_link "$dotfiles_dir/.zshrc" ~/.zshrc # zsh/oh-my-zsh/powerline10k config file
 create_symbolic_link "$dotfiles_dir/.bashrc" ~/.bashrc # basic bash shell if i need to revert from zsh
 create_symbolic_link "$dotfiles_dir/.bash_aliases" ~/.bash_aliases #used for both bash and zsh for short hand commands
 create_symbolic_link "$dotfiles_dir/.tmux.conf" ~/.tmux.conf #terminal multiplexer - mostly specifies keybindings for terminal management, split screens etc.
 create_symbolic_link "$dotfiles_dir/kitty/kitty.conf" ~/.config/kitty/kitty.conf
-
 
 # Make workflow folders if they dont already exist. These dont point to config files in the git repo.
 mkdir -p $HOME/documentation/best_practice
