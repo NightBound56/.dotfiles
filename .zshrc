@@ -58,6 +58,10 @@ export MANPAGER="less -R --use-color -Dd+r -Du+b"
 export MANROFFOPT="-P -c"
 eval $(dircolors $HOME/themes/onedark/onedark_ls_colors)
 
+
+# Enable git colors
+export GIT_CONFIG_PARAMETERS='color.ui=auto'
+
 # Add ZSH source again, if so why?
 source $ZSH/oh-my-zsh.sh
 
