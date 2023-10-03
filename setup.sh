@@ -60,26 +60,21 @@ create_custom_venv() {
 }
 
 
-
-
-
-
 create_symbolic_link() {
   source_path=$(readlink -f "$1")
   dest_path=$(readlink -f "$2")
 
+  cd $HOME
+  # Remove all symbolic links in $HOME
+  find ~/ -type l -exec rm {} +
+  
   # Check if source exists
   if [ ! -e "$source_path" ]; then
     echo "Error: Source '$1' does not exist."
     return 1
   fi
 
-  # Check if source is a symbolic link and remove it
-  if [ -L "$source_path" ]; then
-    rm "$source_path"
-    echo "Removed existing symbolic link: $source_path"
-  fi
-
+  
   # Extract directory path from destination and create if not exists
   dest_dir=$(dirname "$dest_path")
   mkdir -p "$dest_dir"
@@ -102,7 +97,6 @@ create_symbolic_link() {
   ln -s "$source_path" "$dest_path"
   echo "Symbolic link created: $source_path -> $dest_path"
 }
-
 
 
 dotfiles_dir="$HOME/.dotfiles"
