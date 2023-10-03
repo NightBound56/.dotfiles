@@ -85,3 +85,21 @@ import_ssh_keys() {
         echo "Keys directory not found: $keys_dir"
     fi
 }
+
+create_irc_client_certificate() {
+    local network_name=$1
+    local cert_path="$HOME/keys/irc/$network_name.pem"
+
+    # Create directory if it doesn't exist
+    mkdir -p "$HOME/keys/irc"
+
+    # Generate client certificate with 4096 bits, expiring after 30 days
+    openssl req -x509 -nodes -days 30 -newkey rsa:4096 -keyout "$cert_path" -out "$cert_path"
+
+    # Adjust permissions for the generated certificate
+    chmod 600 "$cert_path"
+
+    # Remove expired certificates securely with shred
+    find "$HOME/keys/irc" -type f -name "*.pem" -mtime +30 -exec shred -u -n 42 {} \;
+}
+
