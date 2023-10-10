@@ -1,0 +1,8 @@
+# onedark-wofi.yaml
+
+# OneDark color scheme
+colors:
+  primary: '#2E3440'     # Background
+  secondary: '#434C5E'   # Foreground
+  background: '#2E3440'  # Primary text
+  highlight: '#88C0D0'   # Highlighted text
