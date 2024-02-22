@@ -166,6 +166,7 @@ install_package "neofetch" "pacman"
 install_package "betterlockscreen" "yay"
 install_package "cava" "yay"
 install_package "ruby-colorls" "yay" 
+install_package "librewolf-bin" "yay"
 
 
 #Create symbolic links for directories

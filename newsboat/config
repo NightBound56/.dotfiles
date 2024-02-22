@@ -1,0 +1,71 @@
+auto-reload yes
+article-sort-order date
+articlelist-format "%T  %D  %t"
+
+articlelist-title-format "'%T' (%u unread)"
+feedlist-format     "%4i     %T     %t"
+
+delete-read-articles-on-quit yes
+display-article-progress yes
+feed-sort-order firsttag
+datetime-format "%d-%m-%Y %H:%M"
+
+keep-articles-days 3
+max-items 10
+reload-threads 8
+reload-time 120
+show-read-articles no
+show-read-feeds no
+
+download-path "~/Downloads/podcasts/%h/%n"
+download-filename-format "%F-%t.%e"
+max-downloads 4
+player "mpv"
+
+browser "lynx %u"
+
+podlist-format      "%4i %F [%-5p %%] %-12S"
+
+
+macro c set browser "vlc %u > /dev/null 2>&1"; one; set browser lynx
+
+# Navigation
+bind-key j down feedlist
+bind-key k up feedlist
+bind-key j next articlelist
+bind-key k prev articlelist
+bind-key J next-feed articlelist
+bind-key K prev-feed articlelist
+bind-key j down article
+bind-key k up article
+
+color background          white   black
+color listnormal          white   black
+color listfocus           green  black   bold
+color listnormal_unread   white black
+color listfocus_unread    green black   bold
+color title               black  green   bold
+color info                black  black   bold
+color hint-key            black  green   bold
+color hint-keys-delimiter black  white
+color hint-separator      black  black  bold
+color hint-description    green  black
+color article             white   black
+
+# Podcasts
+highlight all "🎶 " color105 black bold
+# YouTube
+#highlight all "▶️ " color167 black bold
+# Media
+#highlight all "📺 " color33 black bold
+# News
+#highlight all "🕵️ " color1 black bold
+#Articles
+#highlight all "📚 " color160 black bold
+#System Alerts
+highlight all "⚡ WARNING ⚡" color124 black bold
+
+
+confirm-mark-feed-read no
+confirm-exit yes
+text-width 72
