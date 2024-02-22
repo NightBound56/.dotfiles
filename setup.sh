@@ -189,6 +189,7 @@ create_symbolic_link "$dotfiles_dir/.bashrc" ~/.bashrc # basic bash shell if i n
 create_symbolic_link "$dotfiles_dir/.bash_aliases" ~/.bash_aliases #used for both bash and zsh for short hand commands
 create_symbolic_link "$dotfiles_dir/.tmux.conf" ~/.tmux.conf #terminal multiplexer - mostly specifies keybindings for terminal management, split screens etc.
 create_symbolic_link "$dotfiles_dir/kitty/kitty.conf" ~/.config/kitty/kitty.conf
+create_symbolic_link "$dotfiles_dir/themes/onedark/onboard" /usr/share/onboard/themes
 
 # Make workflow folders if they dont already exist. These dont point to config files in the git repo.
 mkdir -p $HOME/documentation/best_practice
