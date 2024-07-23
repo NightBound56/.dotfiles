@@ -17,100 +17,61 @@ clear_history() {
     fi
 }
 
-# Define a function to compress a directory and securely delete its contents
-compress_folder() {
-    # Check if the directory path argument is provided and exists
-    if [ $# -eq 1 ] && [ -d "$1" ]; then
-        local dir_path="$1"
-        
-        # Print a message to indicate the compression process is starting
-        echo "Compressing directory to archive..."
-        echo "Directory path: $dir_path"
-        
-        # Get the directory name (without trailing slashes)
-        local dir_name=$(basename "$dir_path")
-        
-        # Create the archive path one level up from the original directory
-        local archive_path="../${dir_name}.tar.gz"
-        
-        # Use the 'tar' command to compress the directory into a tar.gz archive
-        tar -czf "$archive_path" -C "$(dirname "$dir_path")" "$dir_name"
-        
-        # Check the exit status of 'tar' to verify if the archive creation was successful
-        if [ $? -eq 0 ]; then
-            # Use 'find' to list files within the directory
-            # Pipe the list of files to 'xargs' for parallel processing
-            # '-P' specifies the number of parallel processes to use
-            # Adjust '-P' as needed based on the number of CPU cores
-            find "$dir_path" -type f | xargs -P "$(nproc)" -I {} bash -c '
-                file="$1"
-                echo "Purging: $file"
-                shred -u -n 40 "$file"
-                echo "Purged: $file"
-            ' _ {}
-            
-            # Delete the original directory
-            rm -rf "$dir_path"
-            
-            # Check the exit status of 'rm' to verify if the directory was deleted
-            if [ $? -ne 0 ]; then
-                echo "Error: Failed to delete the original directory."
-                return 1
+
+
+archive() {
+    if [ $# -ne 1 ]; then
+        echo "Usage: archive <path>"
+        return 1
+    fi
+
+    local path="$1"
+    local zip_name
+
+    if [ -e "$path" ]; then
+        if [ -d "$path" ]; then
+            # It's a directory
+            zip_name=$(basename "$path").zip
+            zip -r "$zip_name" "$path"
+            if [ $? -eq 0 ]; then
+                echo "Directory '$path' has been compressed into '$zip_name'."
+                # Verify the zip file
+                zipinfo "$zip_name" >/dev/null
+                if [ $? -eq 0 ]; then
+                    echo "Verification: '$zip_name' is a valid zip archive."
+                else
+                    echo "Verification: '$zip_name' is NOT a valid zip archive or an error occurred."
+                fi
+            else
+                echo "Error compressing directory '$path'."
+            fi
+        elif [ -f "$path" ]; then
+            # It's a file
+            zip_name=$(basename "$path" .${path##*.}).zip
+            zip "$zip_name" "$path"
+            if [ $? -eq 0 ]; then
+                echo "File '$path' has been compressed into '$zip_name'."
+                # Verify the zip file
+                zipinfo "$zip_name" >/dev/null
+                if [ $? -eq 0 ]; then
+                    echo "Verification: '$zip_name' is a valid zip archive."
+                else
+                    echo "Verification: '$zip_name' is NOT a valid zip archive or an error occurred."
+                fi
+            else
+                echo "Error compressing file '$path'."
             fi
         else
-            # If 'tar' encountered an error, print an error message
-            echo "Error: Archive creation failed."
+            echo "Error: '$path' is neither a file nor a directory."
             return 1
         fi
-
-        # Call the clear_history function to clear command history
-        clear_history
-    fi
-}
-
-decompress_folder() {
-  # Check if there is at least 1 argument, it's a file, and it's a compressed archive
-  if [ $# -ge 1 ] && [ -f "$1" ] && [[ "$1" =~ \.(zip|tar\.gz|tar\.bz2|tar\.xz)$ ]]; then
-    # Determine the parent directory
-    parent_dir="$(dirname "$1")"
-    
-    # Create a folder with the archive's name
-    archive_name="$(basename "$1")"
-    folder_name="${archive_name%.*}"  # Remove the file extension
-    mkdir -p "$parent_dir/$folder_name"
-    
-    # Extract the archive into the folder
-    case "$1" in
-      *.zip) unzip -q "$1" -d "$parent_dir/$folder_name" ;;
-      *.tar.gz) tar -xzf "$1" -C "$parent_dir/$folder_name" ;;
-      *.tar.bz2) tar -xjf "$1" -C "$parent_dir/$folder_name" ;;
-      *.tar.xz) tar -xf "$1" -C "$parent_dir/$folder_name" ;;
-    esac
-
-    # Check the exit status of the tar command
-    if [ $? -eq 0 ]; then
-      echo "Extraction completed: $1 -> $parent_dir/$folder_name"
     else
-      echo "Error: Failed to extract $1. Check the archive format or permissions."
-
-      # Securely delete all files in the folder
-      find "$parent_dir/$folder_name" -type f | xargs -P "$(nproc)" -I {} bash -c '
-        file="$1"
-        echo "Purging: $file"
-        shred -u -n 40 "$file"
-        echo "Purged: $file"
-      ' _ {}
-      
-      # Delete the folder
-      rm -rf "$parent_dir/$folder_name"
+        echo "Error: '$path' does not exist."
+        return 1
     fi
-  else
-    echo "Error: One or more conditions are not met."
-  fi
-  
-  # Call the clear_history function to clear command history
-  clear_history
+clear_history
 }
+
 
 encrypt_file() {
   local input_file="$1"

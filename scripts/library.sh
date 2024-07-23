@@ -265,7 +265,7 @@ source ~/scripts/media.sh
 source ~/scripts/utils.sh
 
 # Archiving functions - needs more modularising and made compatible with library.
-#source ~/scripts/archiving.sh
+source ~/scripts/archiving.sh
 
 
 # Naming convention SeasonEpisode_title_year_quality

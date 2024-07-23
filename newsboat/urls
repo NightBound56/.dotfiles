@@ -34,6 +34,8 @@ https://anchor.fm/s/d7f64910/podcast/rss "~Privacy Files" "🎶 Podcast"
 https://feeds.megaphone.fm/NSR4189847919 "~YOMP" "🎶 Podcast"
 https://feeds.megaphone.fm/GLT9190936013 "~The Rest Is Politics" "🎶 Podcast"
 
+
+
 # YouTube
 https://www.youtube.com/feeds/videos.xml?channel_id=UCMiyV_Ib77XLpzHPQH_q0qQ "~Veronica Explains" "▶️ YouTube"
 https://www.youtube.com/feeds/videos.xml?channel_id=UCbAUKL7V6OOGumQEeDMYQvQ "~Unexpected Maker" "▶️ YouTube"
@@ -108,6 +110,12 @@ https://www.techrepublic.com/topic/data-management/ "~Tech Republic - Data Manag
 https://www.techrepublic.com/topic/smart-persons-guides/ "~Tech Republic - Cheatsheets" "📚 Tech"
 https://feweek.co.uk/feed/ "~FE Week" "📚 Tech"
 https://zenhabits.net/feed/ "~Zen Habbits" "🏂 Lifestyle"
+https://mashable.com/category/space "~Mashable - Space" "📚 Science"
+https://mashable.com/category/cybersecurity "~Mashable - Security" "📚 Security"
+https://mashable.com/category/apps-and-software "~Mashable - Software" "📚 Tech"
+https://mashable.com/category/family-parenting "~Mashable - Parenting" "🏂 Lifestyle"
+
+
 
 # Media
 https://www.theverge.com/rss/film/index.xml "~The Verge - Movies" "📺 Media"
@@ -120,6 +128,10 @@ https://www.reddit.com/r/wallpaper.rss "~Wallpaper" "📺 Media"
 https://www.techradar.com/uk/feeds/tag/gaming "~TechRadar - Gaming" "📺 Media"
 https://radiotimes.com/tv/feed "~Radio Times - TV Guide" "📺 Media"
 https://www.radiotimes.com/movies/feed "~Radio Times - Movies" "📺 Media"
+https://mashable.com/category/games "~Mashable - Games" "📺 Media"
+https://mashable.com/category/movies "~Mashable - Movies" "📺 Media"
+https://mashable.com/category/tv-shows "~Mashable - TV" "📺 Media"
+https://mashable.com/category/podcasts "~Mashable - Podcasts" "📺 Media"
 
 # News
 https://www.businessinsider.com/rss "~Business Insider" "🕵️ News"
