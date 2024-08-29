@@ -138,6 +138,9 @@ ln -sf "$HOME/.dotfiles/cava" ~/.config/cava
 ln -sf "$HOME/.dotfiles/scripts" ~/scripts
 ln -sf "$HOME/.dotfiles/file_templates" ~/file_templates
 ln -sf "$HOME/.dotfiles/themes" ~/themes
+ln -sf "$HOME/.dotfiles/mc" ~/.config/mc
+
+
 
 #Create symbolic links for files
 ln -sf "$HOME/.dotfiles/rofi/config" ~/.config/rofi/config
@@ -147,6 +150,8 @@ ln -sf "$HOME/.dotfiles/.bashrc" ~/.bashrc
 ln -sf "$HOME/.dotfiles/.bash_aliases" ~/.bash_aliases
 ln -sf "$HOME/.dotfiles/.tmux" ~/.tmux
 ln -sf "$HOME/.dotfiles/kitty/kitty.conf" ~/.config/kitty/kitty.conf
+ln -sf "$HOME/.dotfiles/themes/onedark/mc/one_dark.ini" ~/.local/share/mc/skins/one_dark.ini
+
 sudo cp -r "$HOME/.dotfiles/themes/onedark/onboard" /usr/share/onboard/themes
 
 
