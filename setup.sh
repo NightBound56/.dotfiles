@@ -125,6 +125,7 @@ install_package "zathura-cb" "pacman"
 install_package "zathura-pdf-mupdf" "pacman"
 install_package "feh" "pacman"
 install_package "neofetch" "pacman"
+install_package "neofetch" "wl-copy"
 
 install_package "betterlockscreen" "yay"
 install_package "cava" "yay"
