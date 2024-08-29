@@ -60,43 +60,6 @@ create_custom_venv() {
 }
 
 
-create_symbolic_link() {
-  source_path=$(readlink -f "$1")
-  dest_path=$(readlink -f "$2")
-
-  cd $HOME
-  # Remove all symbolic links in $HOME
-  find ~/ -type l -exec rm {} +
-  
-  # Check if source exists
-  if [ ! -e "$source_path" ]; then
-    echo "Error: Source '$1' does not exist."
-    return 1
-  fi
-
-  
-  # Extract directory path from destination and create if not exists
-  dest_dir=$(dirname "$dest_path")
-  mkdir -p "$dest_dir"
-
-  # Check if source and destination are the same
-  if [ "$source_path" == "$dest_path" ]; then
-    echo "$source_path"
-    echo "Error: Source and destination are the same. Symbolic link not created."
-    return 1
-  fi
-
-  # Check for indirect self-referencing through symbolic links
-  if [[ -n $(find "$dest_path" -type l -samefile "$source_path") ]]; then
-    echo "$source_path"
-    echo "Error: Symbolic link creates an indirect self-reference. Not created."
-    return 1
-  fi
-
-  # Create symbolic link
-  ln -s "$source_path" "$dest_path"
-  echo "Symbolic link created: $source_path -> $dest_path"
-}
 
 
 dotfiles_dir="$HOME/.dotfiles"
@@ -152,7 +115,7 @@ install_package "tmux" "pacman"
 install_package "mdcat" "pacman"
 install_package "neovim" "pacman"
 install_package "picom" "pacman"
-install_package "i3-wm" "pacman"
+#install_package "i3-wm" "pacman"
 install_package "rofi" "pacman"
 install_package "curl" "pacman"
 install_package "kitty" "pacman"
@@ -170,26 +133,21 @@ install_package "librewolf-bin" "yay"
 
 
 #Create symbolic links for directories
-create_symbolic_link "$dotfiles_dir/i3" ~/.config/i3 #tiling window manager multiple virtual desktops with apps opening on them by default.
-create_symbolic_link "$dotfiles_dir/cava" ~/.config/cava #terminal audio visualisation, needs more work.
-create_symbolic_link "$dotfiles_dir/dmenu" ~/.config/dmenu #terminal based launcher for apps
-create_symbolic_link "$dotfiles_dir/scripts" ~/scripts #script library
-create_symbolic_link "$dotfiles_dir/file_templates" ~/file_templates #using neovim as an editor the are default template files used each time I scaffold a file.
-create_symbolic_link "$dotfiles_dir/themes" ~/themes
-
+ln -sf "$HOME/.dotfiles/cava" ~/.config/cava
+ln -sf "$HOME/.dotfiles/scripts" ~/scripts
+ln -sf "$HOME/.dotfiles/file_templates" ~/file_templates
+ln -sf "$HOME/.dotfiles/themes" ~/themes
 
 #Create symbolic links for files
-create_symbolic_link "$dotfiles_dir/rofi/config" ~/.config/rofi/config #alternative to dmenu
-#create_symbolic_link "$dotfiles_dir/polybar/config" ~/.config/polybar/config #tiny menubar showing system stats and results of scripts.
-create_symbolic_link "$dotfiles_dir/nvim/init.vim" ~/.config/nvim/init.vim #neonim config
-create_symbolic_link "$dotfiles_dir/picom/picom.conf" ~/.config/picom/picom.conf #display manager for i3
-#create_symbolic_link "$dotfiles_dir/mpv/mpv.conf" ~/.config/mpv/mpv.conf #movie player
-create_symbolic_link "$dotfiles_dir/.zshrc" ~/.zshrc # zsh/oh-my-zsh/powerline10k config file
-create_symbolic_link "$dotfiles_dir/.bashrc" ~/.bashrc # basic bash shell if i need to revert from zsh
-create_symbolic_link "$dotfiles_dir/.bash_aliases" ~/.bash_aliases #used for both bash and zsh for short hand commands
-create_symbolic_link "$dotfiles_dir/.tmux.conf" ~/.tmux.conf #terminal multiplexer - mostly specifies keybindings for terminal management, split screens etc.
-create_symbolic_link "$dotfiles_dir/kitty/kitty.conf" ~/.config/kitty/kitty.conf
-create_symbolic_link "$dotfiles_dir/themes/onedark/onboard" /usr/share/onboard/themes
+ln -sf "$HOME/.dotfiles/rofi/config" ~/.config/rofi/config
+ln -sf "$HOME/.dotfiles/nvim/init.vim" ~/.config/nvim/init.vim
+ln -sf "$HOME/.dotfiles/.zshrc" ~/.zshrc
+ln -sf "$HOME/.dotfiles/.bashrc" ~/.bashrc
+ln -sf "$HOME/.dotfiles/.bash_aliases" ~/.bash_aliases
+ln -sf "$HOME/.dotfiles/.tmux" ~/.tmux
+ln -sf "$HOME/.dotfiles/kitty/kitty.conf" ~/.config/kitty/kitty.conf
+sudo cp -r "$HOME/.dotfiles/themes/onedark/onboard" /usr/share/onboard/themes
+
 
 # Make workflow folders if they dont already exist. These dont point to config files in the git repo.
 mkdir -p $HOME/documentation/best_practice
@@ -231,6 +189,9 @@ clone_git_repo "https://github.com/Narmis-E/onedark-wallpapers" "~/wallpapers"
 # nvim plugin manager
 sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+
+# Powerlevel 10k ZSH theme
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
 
 #Make scripts executable
 find $HOME/scripts -type f -name "*.sh" -exec chmod +x {} \;
