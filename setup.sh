@@ -106,11 +106,11 @@ install_package() {
 #install required packages for ricing both from arch repos and AUR
 install_package "grep" "pacman"
 install_package "sed" "pacman"
-#install_package "onboard" "pacman"
+install_package "wget" "pacman"
+install_package "squeekboard" "pacman"
 install_package "git" "pacman"
 install_package "zsh" "pacman"
 install_package "jq" "pacman"
-install_package "wget" "pacman"
 install_package "tmux" "pacman"
 install_package "mdcat" "pacman"
 install_package "neovim" "pacman"
