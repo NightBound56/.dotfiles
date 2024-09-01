@@ -115,8 +115,7 @@ install_package "jq" "pacman"
 install_package "tmux" "pacman"
 install_package "mdcat" "pacman"
 install_package "neovim" "pacman"
-#install_package "picom" "pacman"
-#install_package "i3-wm" "pacman"
+install_package "waybar" "pacman"
 install_package "rofi" "pacman"
 install_package "curl" "pacman"
 install_package "kitty" "pacman"
@@ -192,7 +191,7 @@ mkdir -p $HOME/personal_development/career_plans/software_dev
 mkdir -p $HOME/personal_development/career_plans/data_engineer
 mkdir -p $HOME/resources
 mkdir -p $HOME/keys
-mkdir -p $HOME/wallapers
+mkdir -p $HOME/wallpapers
 mkdir -p $HOME/software_dev/prod
 mkdir -p $HOME/software_dev/test
 mkdir -p $HOME/software_dev/dev
@@ -250,3 +249,5 @@ install_fonts() {
 
 # Example usage:
 install_fonts "$dotfiles_dir/fonts"
+
+echo "Installation complete."
