@@ -1,0 +1,7 @@
+# Include all syntax highlighting files
+include /usr/share/nano/*.nanorc
+
+# Force nano to always use colours
+set const
+set syntax "default"
+

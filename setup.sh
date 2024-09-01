@@ -64,7 +64,7 @@ create_custom_venv() {
 
 dotfiles_dir="$HOME/.dotfiles"
 
-cd $HOME
+
 
 # Set up python environments and create template .env files.
 create_custom_venv dev
@@ -78,29 +78,30 @@ install_package() {
   local package_manager="$2"
 
   echo "Processing $package_name."
+
   # Check if the package is already installed
   if "$package_manager" -Qq "$package_name" &>/dev/null; then
     echo "$package_name ................is already installed."
-	echo ""
+    echo ""
   else
-    # Install the package without sudo for yay
-    if [ "$package_manager" = "yay" ]; then
-	  "Installing ................ $package_name"
+    # Install the package without sudo for yay and paru
+    if [ "$package_manager" = "yay" ] || [ "$package_manager" = "paru" ]; then
+      echo "Installing ................ $package_name"
       "$package_manager" -S --noconfirm "$package_name"
-	  echo ""
+      echo ""
     elif [ "$package_manager" = "pacman" ]; then
       # For pacman, use sudo
-      "Installing ................ $package_name"
-	  sudo "$package_manager" -S --noconfirm "$package_name"
-	  echo ""
+      echo "Installing ................ $package_name"
+      sudo "$package_manager" -S --noconfirm "$package_name"
+      echo ""
     else
       echo "Unsupported package manager: $package_manager"
-	  echo ""
+      echo ""
       return 1
     fi
-    
   fi
 }
+
 
 
 #install required packages for ricing both from arch repos and AUR
@@ -114,7 +115,7 @@ install_package "jq" "pacman"
 install_package "tmux" "pacman"
 install_package "mdcat" "pacman"
 install_package "neovim" "pacman"
-install_package "picom" "pacman"
+#install_package "picom" "pacman"
 #install_package "i3-wm" "pacman"
 install_package "rofi" "pacman"
 install_package "curl" "pacman"
@@ -128,10 +129,22 @@ install_package "neofetch" "pacman"
 install_package "wl-clipboard" "pacman"
 install_package "grim" "pacman"
 install_package "flameshot" "pacman"
-install_package "betterlockscreen" "yay"
-install_package "cava" "yay"
-install_package "ruby-colorls" "yay" 
-install_package "librewolf-bin" "yay"
+install_package "bat" "pacman"
+
+
+#add aur helper - reliant on bat for color output
+sudo pacman -S --needed base-devel
+git clone https://aur.archlinux.org/paru.git
+cd paru
+makepkg -si
+
+cd $HOME
+
+install_package "betterlockscreen" "paru"
+install_package "cava" "paru"
+install_package "ruby-colorls" "paru"
+install_package "librewolf-bin" "paru"
+
 
 
 #Create symbolic links for directories
@@ -149,6 +162,7 @@ ln -sf "$HOME/.dotfiles/nvim/init.vim" ~/.config/nvim/init.vim
 ln -sf "$HOME/.dotfiles/.zshrc" ~/.zshrc
 ln -sf "$HOME/.dotfiles/.bashrc" ~/.bashrc
 ln -sf "$HOME/.dotfiles/.bash_aliases" ~/.bash_aliases
+ln -sf "$HOME/.dotfiles/.nanorc" ~/.nanorc
 ln -sf "$HOME/.dotfiles/.tmux" ~/.tmux
 ln -sf "$HOME/.dotfiles/kitty/kitty.conf" ~/.config/kitty/kitty.conf
 ln -sf "$HOME/.dotfiles/themes/onedark/mc/one_dark.ini" ~/.local/share/mc/skins/one_dark.ini
