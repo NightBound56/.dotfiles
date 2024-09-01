@@ -112,6 +112,7 @@ install_package "squeekboard" "pacman"
 install_package "git" "pacman"
 install_package "zsh" "pacman"
 install_package "jq" "pacman"
+install_package "swaybg" "pacman"
 install_package "tmux" "pacman"
 install_package "mdcat" "pacman"
 install_package "neovim" "pacman"
@@ -169,6 +170,7 @@ ln -sf "$HOME/.dotfiles/themes/onedark/mc/one_dark.ini" ~/.local/share/mc/skins/
 sudo cp -r "$HOME/.dotfiles/themes/onedark/onboard" /usr/share/onboard/themes
 
 
+
 # Make workflow folders if they dont already exist. These dont point to config files in the git repo.
 mkdir -p $HOME/documentation/best_practice
 mkdir -p $HOME/documentation/business_processes
@@ -191,10 +193,13 @@ mkdir -p $HOME/personal_development/career_plans/software_dev
 mkdir -p $HOME/personal_development/career_plans/data_engineer
 mkdir -p $HOME/resources
 mkdir -p $HOME/keys
-mkdir -p $HOME/wallpapers
+mkdir -p $HOME/wallpapers/onedark
 mkdir -p $HOME/software_dev/prod
 mkdir -p $HOME/software_dev/test
 mkdir -p $HOME/software_dev/dev
+
+#Move across workspace, random and seasonal wallpapers, one dark wallpapers are a seperate directory cloned from a repo below
+cp -r "$HOME/.dotfiles/themes/themes/onedark/wallpapers/*" ~/wallpapers
 
 # grab repo's and scripts from third parties
 clone_git_repo "https://github.com/tmux-plugins/tpm" "~/.tmux/plugins/tpm"
@@ -204,7 +209,7 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 clone_git_repo "https://github.com/zsh-users/zsh-syntax-highlighting" "~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
 clone_git_repo "https://github.com/zsh-users/zsh-autosuggestions" "~/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
 clone_git_repo "https://github.com/zsh-users/zsh-completions" "~/.oh-my-zsh/custom/plugins/zsh-completions"
-clone_git_repo "https://github.com/Narmis-E/onedark-wallpapers" "~/wallpapers"
+clone_git_repo "https://github.com/Narmis-E/onedark-wallpapers" "~/wallpapers/onedark"
 
 # nvim plugin manager
 sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
