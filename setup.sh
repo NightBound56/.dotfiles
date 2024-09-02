@@ -158,6 +158,7 @@ ln -sf "$HOME/.dotfiles/mc" ~/.config/mc
 
 #Create symbolic links for files
 ln -sf "$HOME/.dotfiles/rofi/config" ~/.config/rofi/config
+ln -sf "$HOME/.dotfiles/hypr/hyprland.conf" ~/.config/hypr/hyprland.conf
 ln -sf "$HOME/.dotfiles/nvim/init.vim" ~/.config/nvim/init.vim
 ln -sf "$HOME/.dotfiles/.zshrc" ~/.zshrc
 ln -sf "$HOME/.dotfiles/.bashrc" ~/.bashrc
