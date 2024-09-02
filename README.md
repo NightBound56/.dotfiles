@@ -1,5 +1,5 @@
 # PersonalDotFiles
-Run set.sh after cloning.
+Run setup.sh after cloning.
 This will:
 1. install required packages
 2. set up symlinks to required config files
