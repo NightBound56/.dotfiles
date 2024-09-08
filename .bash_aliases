@@ -44,7 +44,7 @@ alias down="cd ~/Downloads"
 # open programs
 alias o='xdg-open'
 
-alias upg="sudo pacman -Syyuu && yay -Syyuu"
+alias upg="sudo pacman -Syyuu && paru -Syyuu"
 alias mediaserv="minidlnad -f /$HOME/.config/minidlna.conf - P /$HOME/.config/minidlna.pid -d"
 alias ls='lsd'
 alias shreddir="$HOME/scripts/./library.sh -f shred_dir -a "
