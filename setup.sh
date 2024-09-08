@@ -155,9 +155,16 @@ ln -sf "$HOME/.dotfiles/themes" ~/themes
 ln -sf "$HOME/.dotfiles/mc" ~/.config/mc
 
 
+#Prep config folders for sym links if software not yet installed:
+mkdir -p ~/.config/rofi/
+mkdir -p ~/.config/hypr/
+mkdir -p ~/.config/nvim/
+mkdir -p ~/.config/kitty/
+mkdir -p ~/.local/share/mc/skins/
+
 
 #Create symbolic links for files
-ln -sf "$HOME/.dotfiles/rofi/config" ~/.config/rofi/config
+ln -sf "$HOME/.dotfiles/rofi/config.rasi" ~/.config/rofi/config.rasi
 ln -sf "$HOME/.dotfiles/hypr/hyprland.conf" ~/.config/hypr/hyprland.conf
 ln -sf "$HOME/.dotfiles/nvim/init.vim" ~/.config/nvim/init.vim
 ln -sf "$HOME/.dotfiles/.zshrc" ~/.zshrc
@@ -167,8 +174,10 @@ ln -sf "$HOME/.dotfiles/.nanorc" ~/.nanorc
 ln -sf "$HOME/.dotfiles/.tmux" ~/.tmux
 ln -sf "$HOME/.dotfiles/kitty/kitty.conf" ~/.config/kitty/kitty.conf
 ln -sf "$HOME/.dotfiles/themes/onedark/mc/one_dark.ini" ~/.local/share/mc/skins/one_dark.ini
+ln -sf "$HOME/.dotfiles/.p10k.zsh" ~/.p10k.zsh
 
-sudo cp -r "$HOME/.dotfiles/themes/onedark/onboard" /usr/share/onboard/themes
+#sudo cp -r "$HOME/.dotfiles/themes/onedark/onboard" /usr/share/onboard/themes
+sudo cp "$HOME/.dotfiles/pacman.conf" /etc/pacman.conf
 
 
 
@@ -199,25 +208,27 @@ mkdir -p $HOME/software_dev/prod
 mkdir -p $HOME/software_dev/test
 mkdir -p $HOME/software_dev/dev
 
-#Move across workspace, random and seasonal wallpapers, one dark wallpapers are a seperate directory cloned from a repo below
-cp -r "$HOME/.dotfiles/themes/themes/onedark/wallpapers/*" ~/wallpapers
 
 # grab repo's and scripts from third parties
-clone_git_repo "https://github.com/tmux-plugins/tpm" "~/.tmux/plugins/tpm"
+git clone "https://github.com/tmux-plugins/tpm" "~/.tmux/plugins/tpm"
 
 # ZSH plugins
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-clone_git_repo "https://github.com/zsh-users/zsh-syntax-highlighting" "~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
-clone_git_repo "https://github.com/zsh-users/zsh-autosuggestions" "~/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
-clone_git_repo "https://github.com/zsh-users/zsh-completions" "~/.oh-my-zsh/custom/plugins/zsh-completions"
-clone_git_repo "https://github.com/Narmis-E/onedark-wallpapers" "~/wallpapers/onedark"
+git clone "https://github.com/zsh-users/zsh-syntax-highlighting" "~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
+git clone "https://github.com/zsh-users/zsh-autosuggestions" "~/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+git clone "https://github.com/zsh-users/zsh-completions" "~/.oh-my-zsh/custom/plugins/zsh-completions"
+git clone "https://github.com/Narmis-E/onedark-wallpapers" ~/wallpapers/onedark
+
+#Move across workspace, random and seasonal wallpapers, one dark wallpapers are a seperate directory cloned from a repo below
+cp -r "$HOME/.dotfiles/themes/onedark/wallpapers/*" ~/wallpapers
+
 
 # nvim plugin manager
 sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 
 # Powerlevel 10k ZSH theme
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 
 #Make scripts executable
 find $HOME/scripts -type f -name "*.sh" -exec chmod +x {} \;

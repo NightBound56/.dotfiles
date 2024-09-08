@@ -1,0 +1,20 @@
+# wofi-config.yaml
+
+# Reference to external style file
+style: '$HOME/themes/onedark/wofi/onedark-wofi.yaml'
+
+# File search settings
+files:
+  enabled: true
+  directory: '$HOME'
+  recursive: true
+
+# Application launching
+actions:
+  - name: "Applications"
+    command: "wofi -show run"
+
+# Custom script
+custom:
+  - name: "script"
+    exec: "~/scripts/library.sh -f {function} $(for a in {1..N}; do echo -n '-a arg$a '; done)"

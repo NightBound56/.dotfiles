@@ -1,1 +1,31 @@
-/home/martz/.dotfiles/rofi/config
+! Contents of ~/.config/rofi/config
+
+# Set the color theme (OneDark in this case)
+configuration {
+    theme: "$HOME/themes/onedark/onedark.rasi";
+}
+
+# Keybindings for different actions
+bindings {
+    # Application launcher
+    Mod1+a:
+        ! This command uses the 'dmenu' mode to launch applications
+        exec rofi -show drun;
+
+    # Window switcher
+    Mod1+w:
+        ! This command uses the 'window' mode to switch between open windows
+        exec rofi -show window;
+
+    # Custom script execution (example)
+    Mod1+c:
+        ! Replace 'path_to_script' with the actual path of your script
+        # exec path_to_script;
+
+    # Search specific folders (example)
+    Mod1+f:
+        ! This command uses the 'file-browser' mode to search only specific directories
+        exec rofi -show file-browser -file-browser-dir "~/Documents:~/Projects";
+
+    ! Add more keybindings or customize existing ones as needed
+}
