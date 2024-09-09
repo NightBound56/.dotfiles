@@ -167,15 +167,15 @@ install_package "bat" "pacman"
 
 # Install AUR helper
 sudo pacman -S --needed base-devel >> "$LOG_FILE" 2>> "$ERROR_LOG_FILE"
-git clone https://aur.archlinux.org/paru.git >> "$LOG_FILE" 2>> "$ERROR_LOG_FILE"
-cd paru || { log_error "Failed to change directory to paru"; exit 1; }
-makepkg -si >> "$LOG_FILE" 2>> "$ERROR_LOG_FILE"
-cd "$HOME" || { log_error "Failed to change directory to $HOME"; exit 1; }
+#git clone https://aur.archlinux.org/paru.git >> "$LOG_FILE" 2>> "$ERROR_LOG_FILE"
+#cd paru || { log_error "Failed to change directory to paru"; exit 1; }
+#makepkg -si >> "$LOG_FILE" 2>> "$ERROR_LOG_FILE"
+#cd "$HOME" || { log_error "Failed to change directory to $HOME"; exit 1; }
 
 # Install additional packages from AUR
-install_package "cava" "paru"
-install_package "ruby-colorls" "paru"
-install_package "librewolf-bin" "paru"
+install_package "cava" "yay"
+install_package "ruby-colorls" "yay"
+install_package "librewolf-bin" "yay"
 
 # Create symbolic links
 create_symlink "$HOME/.dotfiles/cava" "$HOME/.config/cava"
