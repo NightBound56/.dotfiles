@@ -1,9 +1,25 @@
 #!/bin/bash
 
+# Define log files
+LOG_FILE="$HOME/script.log"
+ERROR_LOG_FILE="$HOME/script_error.log"
+
+# Function to log messages
+log_message() {
+    local message="$1"
+    echo "$(date +"%Y-%m-%d %H:%M:%S") - $message" >> "$LOG_FILE"
+}
+
+# Function to log errors
+log_error() {
+    local error_message="$1"
+    echo "$(date +"%Y-%m-%d %H:%M:%S") - ERROR: $error_message" >> "$ERROR_LOG_FILE"
+}
+
 # Function to clone a Git repository
 clone_git_repo() {
     if [ "$#" -ne 2 ]; then
-        echo "Incorrect number of parameters provided"
+        log_error "Incorrect number of parameters provided"
         return
     fi
 
@@ -13,19 +29,19 @@ clone_git_repo() {
     local repo_name
     repo_name=$(basename "$repo_url" .git)
 
-    echo "Repository name: $repo_name"
+    log_message "Repository name: $repo_name"
 
     if [ -d "$destination" ]; then
         if [ -d "$destination/.git" ]; then
-            cd "$destination" || return
-            git pull
-            echo "The existing repo was updated using a pull"
+            cd "$destination" || { log_error "Failed to change directory to $destination"; return; }
+            git pull >> "$LOG_FILE" 2>> "$ERROR_LOG_FILE"
+            log_message "The existing repo was updated using a pull"
         else
-            echo "The destination had a folder with the same name as the repo, clone aborted."
+            log_error "The destination had a folder with the same name as the repo, clone aborted."
         fi
     else
-        git clone "$repo_url" "$destination"
-        echo "The repo cloned successfully."
+        git clone "$repo_url" "$destination" >> "$LOG_FILE" 2>> "$ERROR_LOG_FILE"
+        log_message "The repo cloned successfully."
     fi
 }
 
@@ -37,15 +53,15 @@ create_custom_venv() {
     local env_file="$venv_path/.env"
 
     if [ -d "$venv_path" ]; then
-        echo "Virtual environment '$environment_name' already exists."
+        log_message "Virtual environment '$environment_name' already exists."
     else
-        echo "Creating a new virtual environment '$environment_name'..."
-        python -m venv "$venv_path"
-        echo "Virtual environment '$environment_name' created in '$venv_dir'."
+        log_message "Creating a new virtual environment '$environment_name'..."
+        python -m venv "$venv_path" >> "$LOG_FILE" 2>> "$ERROR_LOG_FILE"
+        log_message "Virtual environment '$environment_name' created in '$venv_dir'."
 
         echo "export VIRTUAL_ENV=\"$venv_path\"" > "$env_file"
         echo "export PATH=\"\$VIRTUAL_ENV/bin:\$PATH\"" >> "$env_file"
-        echo "Virtual environment path added to '$env_file'."
+        log_message "Virtual environment path added to '$env_file'."
     fi
 }
 
@@ -54,17 +70,17 @@ install_package() {
     local package_name="$1"
     local package_manager="$2"
 
-    echo "Processing $package_name."
+    log_message "Processing $package_name."
 
     if "$package_manager" -Qq "$package_name" &>/dev/null; then
-        echo "$package_name is already installed."
+        log_message "$package_name is already installed."
     else
         if [ "$package_manager" = "yay" ] || [ "$package_manager" = "paru" ]; then
-            "$package_manager" -S --noconfirm "$package_name"
+            "$package_manager" -S --noconfirm "$package_name" >> "$LOG_FILE" 2>> "$ERROR_LOG_FILE"
         elif [ "$package_manager" = "pacman" ]; then
-            sudo "$package_manager" -S --noconfirm "$package_name"
+            sudo "$package_manager" -S --noconfirm "$package_name" >> "$LOG_FILE" 2>> "$ERROR_LOG_FILE"
         else
-            echo "Unsupported package manager: $package_manager"
+            log_error "Unsupported package manager: $package_manager"
             return 1
         fi
     fi
@@ -77,16 +93,16 @@ create_symlink() {
 
     if [ -L "$link_name" ]; then
         if [ "$(readlink "$link_name")" == "$target" ]; then
-            echo "Symbolic link $link_name already exists and points to the correct target."
+            log_message "Symbolic link $link_name already exists and points to the correct target."
         else
-            echo "Symbolic link $link_name exists but points to a different target. Updating..."
-            ln -sf "$target" "$link_name"
+            log_message "Symbolic link $link_name exists but points to a different target. Updating..."
+            ln -sf "$target" "$link_name" >> "$LOG_FILE" 2>> "$ERROR_LOG_FILE"
         fi
     elif [ -e "$link_name" ]; then
-        echo "Warning: $link_name already exists as a regular file or directory. Skipping..."
+        log_error "Warning: $link_name already exists as a regular file or directory. Skipping..."
     else
-        ln -sf "$target" "$link_name"
-        echo "Created symbolic link $link_name -> $target"
+        ln -sf "$target" "$link_name" >> "$LOG_FILE" 2>> "$ERROR_LOG_FILE"
+        log_message "Created symbolic link $link_name -> $target"
     fi
 }
 
@@ -95,26 +111,26 @@ install_fonts() {
     local directory="$1"
 
     if [ ! -d "$directory" ]; then
-        echo "Error: Directory not found."
+        log_error "Directory not found."
         exit 1
     fi
 
-    echo "Installing fonts from $directory..."
+    log_message "Installing fonts from $directory..."
     mkdir -p "$HOME/.fonts"
 
     find "$directory" -type f \( -name "*.otf" -o -name "*.ttf" \) -print0 | while IFS= read -r -d '' fontfile; do
         fontname=$(basename "$fontfile")
 
         if fc-list | grep -q "$fontname"; then
-            echo "Font $fontname is already installed."
+            log_message "Font $fontname is already installed."
         else
-            cp "$fontfile" "$HOME/.fonts/"
-            echo "Installed font: $fontname"
+            cp "$fontfile" "$HOME/.fonts/" >> "$LOG_FILE" 2>> "$ERROR_LOG_FILE"
+            log_message "Installed font: $fontname"
         fi
     done
 
-    echo "Updating font cache..."
-    fc-cache -f -v > /dev/null 2>&1
+    log_message "Updating font cache..."
+    fc-cache -f -v > /dev/null 2>> "$ERROR_LOG_FILE"
 }
 
 # Set up Python environments and create .env files
@@ -150,11 +166,11 @@ install_package "flameshot" "pacman"
 install_package "bat" "pacman"
 
 # Install AUR helper
-sudo pacman -S --needed base-devel
-git clone https://aur.archlinux.org/paru.git
-cd paru
-makepkg -si
-cd $HOME
+sudo pacman -S --needed base-devel >> "$LOG_FILE" 2>> "$ERROR_LOG_FILE"
+git clone https://aur.archlinux.org/paru.git >> "$LOG_FILE" 2>> "$ERROR_LOG_FILE"
+cd paru || { log_error "Failed to change directory to paru"; exit 1; }
+makepkg -si >> "$LOG_FILE" 2>> "$ERROR_LOG_FILE"
+cd "$HOME" || { log_error "Failed to change directory to $HOME"; exit 1; }
 
 # Install additional packages from AUR
 install_package "cava" "paru"
@@ -180,39 +196,39 @@ create_symlink "$HOME/.dotfiles/themes/onedark/mc/one_dark.ini" "$HOME/.local/sh
 create_symlink "$HOME/.dotfiles/.p10k.zsh" "$HOME/.p10k.zsh"
 
 # Copy configuration files that require sudo
-sudo cp "$HOME/.dotfiles/pacman.conf" /etc/pacman.conf
+sudo cp "$HOME/.dotfiles/pacman.conf" /etc/pacman.conf >> "$LOG_FILE" 2>> "$ERROR_LOG_FILE"
 
 # Create directories
-mkdir -p $HOME/documentation/{best_practice,business_processes,meeting_notes,migration_plans,technical_guides,technical_training,user_guides,workflow}
-mkdir -p $HOME/learning/{IT,science}
-mkdir -p $HOME/_tickets/{archive,sample_ticket,change_requests}
-mkdir -p $HOME/_todo/sample_ticket
-mkdir -p $HOME/ad_hoc_backups
-mkdir -p $HOME/ad_hoc_restores
-mkdir -p $HOME/personal_development/career_plans/{biology,software_dev,data_engineer}
-mkdir -p $HOME/resources
-mkdir -p $HOME/keys
-mkdir -p $HOME/wallpapers/onedark
-mkdir -p $HOME/software_dev/{prod,test,dev}
+mkdir -p $HOME/documentation/{best_practice,business_processes,meeting_notes,migration_plans,technical_guides,technical_training,user_guides,workflow} >> "$LOG_FILE" 2>> "$ERROR_LOG_FILE"
+mkdir -p $HOME/learning/{IT,science} >> "$LOG_FILE" 2>> "$ERROR_LOG_FILE"
+mkdir -p $HOME/_tickets/{archive,sample_ticket,change_requests} >> "$LOG_FILE" 2>> "$ERROR_LOG_FILE"
+mkdir -p $HOME/_todo/sample_ticket >> "$LOG_FILE" 2>> "$ERROR_LOG_FILE"
+mkdir -p $HOME/ad_hoc_backups >> "$LOG_FILE" 2>> "$ERROR_LOG_FILE"
+mkdir -p $HOME/ad_hoc_restores >> "$LOG_FILE" 2>> "$ERROR_LOG_FILE"
+mkdir -p $HOME/personal_development/career_plans/{biology,software_dev,data_engineer} >> "$LOG_FILE" 2>> "$ERROR_LOG_FILE"
+mkdir -p $HOME/resources >> "$LOG_FILE" 2>> "$ERROR_LOG_FILE"
+mkdir -p $HOME/keys >> "$LOG_FILE" 2>> "$ERROR_LOG_FILE"
+mkdir -p $HOME/wallpapers/onedark >> "$LOG_FILE" 2>> "$ERROR_LOG_FILE"
+mkdir -p $HOME/software_dev/{prod,test,dev} >> "$LOG_FILE" 2>> "$ERROR_LOG_FILE"
 
 # Clone third-party repositories
-git clone "https://github.com/tmux-plugins/tpm" "$HOME/.tmux/plugins/tpm"
-git clone "https://github.com/Narmis-E/onedark-wallpapers" "$HOME/wallpapers/onedark"
+git clone "https://github.com/tmux-plugins/tpm" "$HOME/.tmux/plugins/tpm" >> "$LOG_FILE" 2>> "$ERROR_LOG_FILE"
+git clone "https://github.com/Narmis-E/onedark-wallpapers" "$HOME/wallpapers/onedark" >> "$LOG_FILE" 2>> "$ERROR_LOG_FILE"
 
 # Copy wallpapers
-cp -r "$HOME/.dotfiles/themes/onedark/wallpapers/*" "$HOME/wallpapers"
+cp -r "$HOME/.dotfiles/themes/onedark/wallpapers/*" "$HOME/wallpapers" >> "$LOG_FILE" 2>> "$ERROR_LOG_FILE"
 
 # Install Neovim plugin manager
-sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim' >> "$LOG_FILE" 2>> "$ERROR_LOG_FILE"
 
 # Make scripts executable
-find $HOME/scripts -type f -name "*.sh" -exec chmod +x {} \;
+find $HOME/scripts -type f -name "*.sh" -exec chmod +x {} \; >> "$LOG_FILE" 2>> "$ERROR_LOG_FILE"
 
 # Install fonts
 install_fonts "$HOME/.dotfiles/fonts"
 
 # Change shell to Zsh
-chsh -s $(which zsh)
+chsh -s $(which zsh) >> "$LOG_FILE" 2>> "$ERROR_LOG_FILE"
 
 # Install Oh My Zsh
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" >> "$LOG_FILE" 2>> "$ERROR_LOG_FILE"
