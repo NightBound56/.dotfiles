@@ -153,11 +153,11 @@ install_package "bat" "pacman"
 #git clone https://aur.archlinux.org/paru.git
 #cd paru
 #makepkg -si
+cd $HOME
 sudo pacman -S --needed git base-devel && git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si
 yay -Y --gendb
 yay -Syu --devel
 yay -Y --devel --save
-
 cd $HOME
 
 # Install additional packages from AUR
